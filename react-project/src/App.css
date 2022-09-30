@@ -1,0 +1,24 @@
+#main-color {
+  background: rgb(250, 249, 224);
+}
+
+
+
+#brand-logo {
+  font-family: 'NanumMyeongjoExtraBold';
+  font-size: 20px;
+}
+
+
+#fs {
+  margin-left: 20px;
+  font-size: 18px;
+}
+
+.main-font {
+  font-family: 'NanumMyeongjoBold';;
+}
+
+div {
+  box-sizing: border-box;
+}
