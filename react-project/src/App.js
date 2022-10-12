@@ -10,6 +10,7 @@ const breakpointColumnsObj = {
   500: 1
 };
 // https://codesandbox.io/s/i2u4n?file=/src/App.js
+
 var posts = [ // db에서 src 받아와서 넣기
   { id: 1, title: 'Leobinus', subtitle: 'stdo uno', src: '/logo.jpg' },
   { id: 1, title: 'Leobinus', subtitle: 'stdo uno', src: 'https://naver.github.io/egjs-infinitegrid/assets/image/1.jpg' },
