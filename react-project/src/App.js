@@ -2,13 +2,28 @@ import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Container, Navbar, Nav, Offcanvas } from 'react-bootstrap'
 import Masonry from 'react-masonry-css'
-
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import { BsChevronCompactLeft, BsChevronCompactRight } from "react-icons/bs";
+ 
 const breakpointColumnsObj = {
   default: 4,
   1100: 3,
   700: 2,
   500: 1
 };
+const settings = {
+  dots: true,
+  fade: true,
+  infinite: true,
+  speed: 500,
+  slidesToShow: 1,
+  slidesToScroll: 1,
+  nextArrow: <div><BsChevronCompactRight style={{fontSize : '5vh', color: 'grey'}} /></div>,
+  prevArrow: <div><BsChevronCompactLeft style={{fontSize : '5vh', color: 'grey'}} /></div>
+};
+
 // https://codesandbox.io/s/i2u4n?file=/src/App.js
 
 var posts = [ // db에서 src 받아와서 넣기
@@ -39,7 +54,7 @@ posts = posts.map((item) => {
 
 function App() {
   return (
-    <div className="App" style={{ background: 'rgb(250, 249, 224)', boxSizing: 'border-box' }}>
+    <div className="App">
       <MainNav></MainNav>
       <Masonry
         breakpointCols={breakpointColumnsObj}
@@ -49,11 +64,36 @@ function App() {
         {posts}
 
       </Masonry >
+      <hr /><br />
+
+      <Slider {...settings}>
+          <div className='imgbox'>
+            <img src='https://naver.github.io/egjs-infinitegrid/assets/image/1.jpg' />
+          </div>
+          <div className='imgbox'>
+            <img src='https://naver.github.io/egjs-infinitegrid/assets/image/2.jpg' />
+          </div>
+          <div className='imgbox'>
+            <img src='https://naver.github.io/egjs-infinitegrid/assets/image/3.jpg' />
+          </div>
+          <div className='imgbox'>
+            <img src='https://naver.github.io/egjs-infinitegrid/assets/image/5.jpg' />
+          </div>
+          <div className='imgbox'>
+            <img src='https://naver.github.io/egjs-infinitegrid/assets/image/6.jpg' />
+          </div>
+
+
+        </Slider>
+
+      
+      
     </div >
 
 
   );
 }
+
 
 function MainNav() {
   return (
@@ -64,8 +104,9 @@ function MainNav() {
 
             <img
               src={process.env.PUBLIC_URL + '/logo.jpg'}
-              width="50px"
-              height="50px"
+              width="100px"
+              height="100px"
+              style={{borderRadius:'50%', border:'3px solid black'}}
               className="d-inline-block align-top ms-2"
             />
 
@@ -114,5 +155,7 @@ function MainNav() {
     </div>
   )
 }
+
+
 
 export default App;
