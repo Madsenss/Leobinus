@@ -1,17 +1,19 @@
 import Masonry from 'react-masonry-css'
 import datas from '../dbdata/data.js'
 
-const breakpointColumnsObj = {
+const setColumn = {
   default: 4,
   1100: 3,
   700: 2,
   500: 1
 };
 
-function Posts() {
+function Posts(props) {
   return (
+    
+    <>
     <Masonry
-      breakpointCols={breakpointColumnsObj}
+      breakpointCols={setColumn}
       className="my-masonry-grid"
       columnClassName="my-masonry-grid_column"
     >
@@ -20,9 +22,11 @@ function Posts() {
           return (
             <div key={i}>
               <div className='wrap'>
-                <img src={item.src} art="" />
+                <a href="/detail">
+                  <img src={item.src} art={i} />
+                </a>
                 <div className='wrap-text'>
-                  <h3>1</h3>
+                  <h3>{props.postData}</h3>
                 </div>
               </div>
             </div>
@@ -30,6 +34,7 @@ function Posts() {
         })
       }
     </Masonry >
+    </>
   )
 }
 

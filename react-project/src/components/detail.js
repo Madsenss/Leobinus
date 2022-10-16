@@ -38,7 +38,7 @@ function Detail() {
         datas.map((item, i) => {
           return(
             <div className='imgbox' key={i}>
-              <img src={item.src} />
+              <img src={item.src} art="0" />
             </div>
           )
           

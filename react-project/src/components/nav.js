@@ -2,6 +2,8 @@ import { Container, Navbar, Nav, Offcanvas } from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useNavigate } from 'react-router-dom'
 
+
+
 function MainNav() {
   let navigate = useNavigate();
   return (
@@ -9,13 +11,13 @@ function MainNav() {
       {['md'].map((expand) => (
         <Navbar key={expand} expand={expand}>
           <Container fluid>
-
             <img
               src={process.env.PUBLIC_URL + '/logo.jpg'}
               width="50px"
               height="50px"
               style={{borderRadius:'50%', border:'4px solid black'}}
               className="d-inline-block align-top ms-2"
+              art="0"
               onClick={()=>{navigate('/')}}
             />
 
@@ -26,7 +28,6 @@ function MainNav() {
             <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-${expand}`} />
 
             <Navbar.Offcanvas
-
               id={`offcanvasNavbar-expand-${expand}`}
               aria-labelledby={`offcanvasNavbarLabel-expand-${expand}`}
               placement="end"
@@ -34,26 +35,20 @@ function MainNav() {
 
               <Offcanvas.Header closeButton>
                 <Offcanvas.Title id={`offcanvasNavbarLabel-expand-${expand}`}>
-
                   <img src={process.env.PUBLIC_URL + '/logo.jpg'} style={{ width: '100%' }}
-                    className="d-inline-block align-top"
+                    className="d-inline-block align-top" art="0"
                   />
-
-
-
-
-
                 </Offcanvas.Title>
               </Offcanvas.Header>
 
               <Offcanvas.Body>
                 <Nav className="justify-content-end flex-grow-1 me-1">
-                  <Nav.Link href="/detail" className="main-font" id="fs">about</Nav.Link>
-                  <Nav.Link href="/detail" className="main-font" id="fs">all</Nav.Link>
-                  <Nav.Link href="/detail" className="main-font" id="fs">editorial</Nav.Link>
-                  <Nav.Link href="/detail" className="main-font" id="fs">commercial</Nav.Link>
-                  <Nav.Link href="/detail" className="main-font" id="fs">portrait</Nav.Link>
-                  <Nav.Link href="/detail" className="main-font" id="fs">shop</Nav.Link>
+                  <Nav.Link href="/about" className="main-font" id="fs">about</Nav.Link>
+                  <Nav.Link href="/all" className="main-font" id="fs">all</Nav.Link>
+                  <Nav.Link href="/editorial" className="main-font" id="fs">editorial</Nav.Link>
+                  <Nav.Link href="/commercial" className="main-font" id="fs">commercial</Nav.Link>
+                  <Nav.Link href="/portrait" className="main-font" id="fs">portrait</Nav.Link>
+                  <Nav.Link href="/shop" className="main-font" id="fs">shop</Nav.Link>
                 </Nav>
               </Offcanvas.Body>
 
