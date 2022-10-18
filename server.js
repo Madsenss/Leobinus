@@ -57,10 +57,10 @@ app.get('/upload', function (req, res) {
 });
 
 app.post('/upload', upload.array('mainimage', 10), (req, res) => {
-  if (req.body.filename == null) {
-    return res.send(`<script type="text/javascript">alert("이미지 파일이 없습니다"); history.go(-1);</script>`);;
-  } else if (req.body.title == (null || "") || req.body.subtitle == (null || "")) {
+  if (req.body.title == (null || "") || req.body.subtitle == (null || "")) {
     return res.send(`<script type="text/javascript">alert("타이틀 내용이 없습니다"); history.go(-1);</script>`);;
+  } else if (req.body.filename == null) {
+    return res.send(`<script type="text/javascript">alert("이미지 파일이 없습니다"); history.go(-1);</script>`);;
   } else {
 
     db.collection('counter').findOne({ name: 'total' }, (error, result) => {

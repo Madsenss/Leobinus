@@ -105,3 +105,29 @@
   color: black;
   font-weight: bold;
 }
+
+.nav-item > button {
+  color: red;
+  font-size: 1.5vh;
+}
+
+thead > tr, th{
+  text-align: center;
+}
+tbody > tr, td {
+  text-align: center;
+  vertical-align: middle;
+}
+.xx {
+  width: 100px;
+}
+
+.xx:hover {
+  transform: scale(2);
+  transition: all 0.3s;
+}
+
+.setting {
+  display: block;
+  margin: auto;
+}
