@@ -89,7 +89,7 @@ function AdminTab() {
             )
           })
         }
-        <Tab eventKey={'setting'} title={<SettingsIcon fontSize="medium" />}>
+        <Tab eventKey={'setting'} title={<SettingsIcon style={{fontSize:'1.5vh'}} />}>
           <div className="setting">
             <p>탭 생성</p>
             <input type="text" /><button>생성</button>

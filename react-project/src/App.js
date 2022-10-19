@@ -4,7 +4,9 @@ import MainNav from './components/nav.js';
 import Posts from './components/posts.js';
 import Detail from './components/detail.js';
 import AdminTab from './components/adminTab';
-import { Routes, Route } from 'react-router-dom'
+import AdminNav from './components/adminNav';
+import Login from './components/login';
+import { Routes, Route, Outlet } from 'react-router-dom'
 import axios from 'axios'
 import { useEffect, useState } from 'react';
 
@@ -43,9 +45,12 @@ function App() {
         <Route path="/detail" element={<><MainNav /><Detail /></>} />
 
         {/* 관리자 페이지 영역 */}
-        <Route path="/login" element={<div>로그인폼</div>} />
-        <Route path="/admin" element={<><div>관리자네비바</div><AdminTab /></>} />
-        <Route path="/contect" element={<><div>관리자네비바</div><div>이메일JS</div></>} />
+        <Route path="/login" element={<Login />} />
+
+        <Route path="/admin" element={<><AdminNav /><AdminTab /></>}/>
+        <Route path="/posts" element={<><AdminNav /><AdminTab /></>}/>
+        <Route path="/mail" element={<><AdminNav /><div>mail</div></>}/>
+
       </Routes>
 
 

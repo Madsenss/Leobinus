@@ -4,6 +4,7 @@ import "slick-carousel/slick/slick-theme.css";
 import { BsChevronCompactLeft, BsChevronCompactRight, BsArrowLeft } from "react-icons/bs";
 import datas from '../dbdata/data.js';
 import { Container, Row, Col } from 'react-bootstrap'
+import { useNavigate } from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const settings = {
@@ -31,6 +32,7 @@ function Prev(){
 }
 
 function Detail() {
+  let navigate = useNavigate();
   return (
     <>
     <Slider {...settings}>
@@ -53,7 +55,7 @@ function Detail() {
           <Col></Col>
           <Col className="back">
             <div className="arrow">
-              <BsArrowLeft onClick={()=>{window.history.back()}} />
+              <BsArrowLeft onClick={()=>{navigate(-1)}} />
             </div>
           </Col>
         </Row>

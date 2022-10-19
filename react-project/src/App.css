@@ -20,6 +20,13 @@
   box-sizing: border-box;
   font-family: 'NanumMyeongjo';
 }
+a {
+  text-decoration: none;
+}
+
+Link {
+  text-decoration: none;
+}
 
 .body {
   overflow: hidden;
@@ -107,8 +114,16 @@
 }
 
 .nav-item > button {
+  color: grey;
+  font-size: 1.8vh;
+}
+
+.nav-item > button:hover {
   color: red;
-  font-size: 1.5vh;
+}
+
+.nav-item > button:after {
+  color: red;
 }
 
 thead > tr, th{
@@ -130,4 +145,18 @@ tbody > tr, td {
 .setting {
   display: block;
   margin: auto;
+}
+
+.lgb {
+  border: 2px solid black;
+  width:80vw;
+  height: 40vh;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  vertical-align: middle;
+}
+.lgb2 {
+  border:1px solid red;
 }

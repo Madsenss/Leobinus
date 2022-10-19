@@ -1,6 +1,6 @@
 import { Container, Navbar, Nav, Offcanvas } from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 
 
 
@@ -21,7 +21,7 @@ function MainNav() {
               onClick={()=>{navigate('/')}}
             />
 
-            <Navbar.Brand href="/" className="main-font ms-4" id="brand-logo">
+            <Navbar.Brand onClick={()=>{navigate('/')}} className="" id="brand-logo">
               Leobinus
             </Navbar.Brand>
 
@@ -43,12 +43,12 @@ function MainNav() {
 
               <Offcanvas.Body>
                 <Nav className="justify-content-end flex-grow-1 me-1">
-                  <Nav.Link href="/about" className="main-font" id="fs">about</Nav.Link>
-                  <Nav.Link href="/all" className="main-font" id="fs">all</Nav.Link>
-                  <Nav.Link href="/editorial" className="main-font" id="fs">editorial</Nav.Link>
-                  <Nav.Link href="/commercial" className="main-font" id="fs">commercial</Nav.Link>
-                  <Nav.Link href="/portrait" className="main-font" id="fs">portrait</Nav.Link>
-                  <Nav.Link href="/shop" className="main-font" id="fs">shop</Nav.Link>
+                  <Nav.Link onClick={()=>{navigate('/about')}} id="fs">about</Nav.Link>
+                  <Nav.Link onClick={()=>{navigate('/all')}} id="fs">all</Nav.Link>
+                  <Nav.Link onClick={()=>{navigate('/editorial')}} id="fs">editorial</Nav.Link>
+                  <Nav.Link onClick={()=>{navigate('/commercial')}} id="fs">commercial</Nav.Link>
+                  <Nav.Link onClick={()=>{navigate('/portrait')}} id="fs">portrait</Nav.Link>
+                  <Nav.Link onClick={()=>{navigate('/shop')}} id="fs">shop</Nav.Link>
                 </Nav>
               </Offcanvas.Body>
 
