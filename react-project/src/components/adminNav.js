@@ -65,7 +65,7 @@ function WriteModal(props) {
                 {
                   categorys.map((item, i) => {
                     return (
-                      <option value={item.category}>{item.category}</option>
+                      <option key={i} value={item.category}>{item.category}</option>
                     )
                   })
                 }

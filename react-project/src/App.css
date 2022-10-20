@@ -126,12 +126,14 @@ Link {
   color: red;
 }
 
-thead > tr, th{
+thead > tr > th{
   text-align: center;
+  font-size: 1.7vh;
 }
-tbody > tr, td {
+tbody > tr > td {
   text-align: center;
   vertical-align: middle;
+  font-size: 1.7vh;
 }
 .xx {
   width: 100px;
