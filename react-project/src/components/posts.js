@@ -1,14 +1,15 @@
 import Masonry from 'react-masonry-css'
 import datas from '../dbdata/data.js'
-
+import { useNavigate } from 'react-router-dom'
 const setColumn = {
-  default: 4,
+  default: 3,
   1100: 3,
   700: 2,
-  500: 1
+  500: 2
 };
 
 function Posts(props) {
+  let navigate = useNavigate();
   return (
     
     <>
@@ -17,16 +18,26 @@ function Posts(props) {
       className="my-masonry-grid"
       columnClassName="my-masonry-grid_column"
     >
+      {/* <div>
+       <div className='wrap'>
+        <a href="/detail">
+          <img src={`http://localhost:8080/image/${props.test.src[0]}`} alt="test" />
+        </a>
+        <div className='wrap-text'>
+          <h3 style={{fontFamily : props.test.font }}>{props.test.category}</h3>
+          <h2 style={{fontFamily : props.test.font }}>{props.test.title}</h2>
+        </div>
+        </div>
+      </div> */}
       {
         datas.map((item, i) => {
           return (
             <div key={i}>
               <div className='wrap'>
-                <a href="/detail">
-                  <img src={item.src} art={i} />
-                </a>
+                <img src={item.src} alt={i} onClick={()=>{navigate('/detail')}} />
                 <div className='wrap-text'>
-                  <h3>{props.postData}</h3>
+                  <h3 style={{fontFamily : item.font}}>{item.category}</h3>
+                  <h2 style={{fontFamily : item.font}}>{item.title}</h2>
                 </div>
               </div>
             </div>

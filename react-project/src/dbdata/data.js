@@ -1,13 +1,12 @@
 var datas = [ // db 데이터  ajax로 받아서 나중에 수정
-  { id: 1, title: 'Leobinus1', category: 'editorial', src: '/logo.jpg' },
-  { id: 2, title: 'Leobinus2', category: 'editorial', src: 'https://naver.github.io/egjs-infinitegrid/assets/image/1.jpg' },
-  { id: 3, title: 'Leobinus3', category: 'editorial', src: 'https://naver.github.io/egjs-infinitegrid/assets/image/2.jpg' },
-  { id: 4, title: 'Leobinus4', category: 'commercial', src: 'https://naver.github.io/egjs-infinitegrid/assets/image/3.jpg' },
-  { id: 5, title: 'Leobinus5', category: 'commercial', src: 'https://naver.github.io/egjs-infinitegrid/assets/image/4.jpg' },
-  { id: 6, title: 'Leobinus6', category: 'commercial', src: 'https://naver.github.io/egjs-infinitegrid/assets/image/5.jpg' },
-  { id: 7, title: 'Leobinus7', category: 'portrait', src: 'https://naver.github.io/egjs-infinitegrid/assets/image/6.jpg' },
-  { id: 8, title: 'Leobinus8', category: 'portrait', src: 'https://naver.github.io/egjs-infinitegrid/assets/image/7.jpg' },
-  { id: 9, title: 'Leobinus9', category: 'portrait', src: 'https://naver.github.io/egjs-infinitegrid/assets/image/8.jpg' },
+  { id: 1, font: "NanumMyeongjo" , title: 'ESSAI GOODS', category: 'commercial', src: 'C_ESSAI GOODS_0.jpg' },
+  { id: 2, font: "NanumGothic" , title: 'ESSAI MAGAZINE', category: 'commercial', src: 'C_ESSAI MAGAZINE_0.jpg' },
+  { id: 3, font: "NanumMyeongjo" , title: 'ESSAI x COSMOS', category: 'commercial', src: 'C_ESSAI x COSMOS_0.jpg' },
+  { id: 4, font: "NanumGothic" , title: 'ESSAI x PARTITION', category: 'commercial', src: 'C_ESSAI x PARTITION_0.jpg' },
+  { id: 5, font: "NanumMyeongjo" , title: 'TOYBOX MAGAZINE_0', category: 'commercial', src: 'C_TOYBOX MAGAZINE_0.JPG' },
+  { id: 6, font: "NanumGothic" , title: 'ANDO TADAO 1', category: 'editorial', src: 'E_ANDO TADAO 1_0.jpg' },
+  { id: 7, font: "NanumMyeongjo" , title: 'ANDO TADAO 2', category: 'editorial', src: 'E_ANDO TADAO 2_0.jpg' },
+  { id: 8, font: "NanumGothic" , title: 'NICE', category: 'editorial', src: 'E_NICE_0.jpg' },
 ]
 
 export default datas;

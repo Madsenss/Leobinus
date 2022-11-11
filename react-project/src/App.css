@@ -1,4 +1,3 @@
-
 #brand-logo {
   font-family: 'NanumMyeongjoExtraBold';
   font-size: 30px;
@@ -20,6 +19,7 @@
   box-sizing: border-box;
   font-family: 'NanumMyeongjo';
 }
+
 a {
   text-decoration: none;
 }
@@ -31,36 +31,39 @@ Link {
 .body {
   overflow: hidden;
 }
+
 .my-masonry-grid {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  margin-left: 70px;
-  margin-right: 100px;
+  margin-left: 0px;
+  margin-right: 10px;
   width: auto;
-  padding-top: 100px;
+  /* padding-top: 100px; */
 }
+
 .my-masonry-grid_column {
-  padding-left: 30px; /* gutter size */
+  padding-left: 10px;
+  /* gutter size */
   background-clip: padding-box;
 }
 
 /* Style your items */
-.my-masonry-grid_column > div {
-  margin-bottom: 30px;
+.my-masonry-grid_column>div {
+  margin-bottom: 10px;
   cursor: pointer;
 }
 
-.my-masonry-grid_column > div > .wrap img {
+.my-masonry-grid_column>div>.wrap img {
   width: 100%;
   border-radius: 0%;
   position: relative;
   transition: all 0.3s ease;
-  box-shadow: 5px 5px 2px 0px rgb(109, 107, 107);
 }
-.my-masonry-grid_column > div > .wrap img:hover {
+
+.my-masonry-grid_column>div>.wrap img:hover {
   filter: brightness(90%);
-  transform: scale(1.05);
+  transform: scale(1.02);
   z-index: 50;
 }
 
@@ -71,34 +74,53 @@ Link {
 
 .wrap-text h3 {
   text-align: center;
-	position: absolute;
-	top: 50%;
-	left: 50%;
-  transform: translate( -50%, -50% );
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   z-index: 51;
-  color: blue;
+  display: none;
+}
+
+.wrap-text h2 {
+  text-align: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -40%);
+  z-index: 51;
   display: none;
 }
 
 .wrap:hover h3 {
-  color: white;
+  font-size: 1.3vw;
   display: block;
+  color: white;
+}
+
+.wrap:hover h2 {
+  font-size: 2.5vh;
+  display: block;
+  margin-top: 4vw;
+  color: white;
 }
 
 .fixed {
   width: 100%;
   position: fixed;
   height: 50px;
-  bottom: 0px;;
+  bottom: 0px;
+  ;
 }
 
 .title {
   display: flex;
   align-items: center;
   margin-left: 20px;
-  font-size: 16px;
+  font-size: 1vh;
   font-weight: bolder
 }
+
 .back {
   margin-right: 40px;
   font-size: 30px;
@@ -106,59 +128,84 @@ Link {
   color: grey;
 }
 
-.back:hover > .arrow {
+.back:hover>.arrow {
   margin-right: 10px;
   transition: all 0.3s ease-in;
   color: black;
   font-weight: bold;
 }
 
-.nav-item > button {
+.nav-item>button {
   color: grey;
-  font-size: 1.8vh;
+  font-size: 1.7vh;
 }
 
-.nav-item > button:hover {
-  color: red;
+.nav-item>button:hover {
+  color: black;
 }
 
-.nav-item > button:after {
-  color: red;
-}
 
-thead > tr > th{
+thead>tr>th {
   text-align: center;
   font-size: 1.7vh;
 }
-tbody > tr > td {
+
+tbody>tr>td {
   text-align: center;
   vertical-align: middle;
   font-size: 1.7vh;
 }
-.xx {
-  width: 100px;
-}
 
-.xx:hover {
-  transform: scale(2);
-  transition: all 0.3s;
+.preview {
+  width: 10vh;
 }
 
 .setting {
+  max-width: 500px;
   display: block;
-  margin: auto;
 }
 
-.lgb {
-  border: 2px solid black;
-  width:80vw;
-  height: 40vh;
+
+.loginbg {
+  opacity: 0.1;
+  max-width: 100%;
+  max-height: 100%;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  overflow: auto;
+  position: fixed;
+}
+
+.loginBoxOuter {
+  background-image: url('../public/logo.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+
+  max-width: 600px;
+  max-height: 50%;
+  width: 80vw;
+  height: 100%;
+
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+
+  display:table;
+  table-layout:fixed;
+}
+
+.loginBoxInner {
+  display: table-cell;
   vertical-align: middle;
 }
-.lgb2 {
-  border:1px solid red;
+
+.loginBoxInner button {
+  background-color: black;
+  margin: auto;
+  display: block;
 }

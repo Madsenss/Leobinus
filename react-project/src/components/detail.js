@@ -1,17 +1,21 @@
+import { Container, Row, Col } from 'react-bootstrap'
+import { useNavigate } from "react-router-dom";
+
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 import { BsChevronCompactLeft, BsChevronCompactRight, BsArrowLeft } from "react-icons/bs";
 import datas from '../dbdata/data.js';
-import { Container, Row, Col } from 'react-bootstrap'
-import { useNavigate } from "react-router-dom";
-import 'bootstrap/dist/css/bootstrap.min.css';
+
+
 
 const settings = {
   dots: true,
   fade: true,
   infinite: true,
-  speed: 1100,
+  speed: 800,
   slidesToShow: 1,
   slidesToScroll: 1,
   nextArrow: (<div><BsChevronCompactRight style={{ fontSize: '5vh', color: 'grey' }} /></div>),
@@ -31,20 +35,21 @@ function Prev(){
   )
 }
 
-function Detail() {
+function Detail(props) {
   let navigate = useNavigate();
   return (
     <>
     <Slider {...settings}>
       {
-        datas.map((item, i) => {
+        props.test != null
+        ? props.test.src.map((item,i)=>{
           return(
             <div className='imgbox' key={i}>
-              <img src={item.src} art="0" />
-            </div>
+                <img src={`http://localhost:8080/image/${item}`} alt="test" />
+              </div>
           )
-          
         })
+        : null
       }
     </Slider>
       <Container fluid>

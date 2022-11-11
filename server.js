@@ -31,10 +31,6 @@ var storage = multer.diskStorage({
   filename: function (req, file, cb) {
     cb(null, file.originalname)
   }
-  // filefilter : function(req, file, cb){
-
-  // },
-  // limits : 1024 * 1024
 
 });
 
@@ -56,8 +52,8 @@ app.get('/upload', function (req, res) {
   res.render('upload.ejs')
 });
 
-app.post('/upload', upload.array('mainimage', 10), (req, res) => {
-  if (req.body.title == (null || "") || req.body.subtitle == (null || "")) {
+app.post('/upload', upload.array('filename', 20), (req, res) => {
+  if (req.body.title == (null || "")) {
     return res.send(`<script type="text/javascript">alert("타이틀 내용이 없습니다"); history.go(-1);</script>`);;
   } else if (req.body.filename == null) {
     return res.send(`<script type="text/javascript">alert("이미지 파일이 없습니다"); history.go(-1);</script>`);;
@@ -66,7 +62,7 @@ app.post('/upload', upload.array('mainimage', 10), (req, res) => {
     db.collection('counter').findOne({ name: 'total' }, (error, result) => {
       var totalResult = result.totalPost;
 
-      db.collection('post').insertOne({ _id: (totalResult + 1), title: req.body.title, subtitle: req.body.subtitle, category: req.body.category, src: req.body.filename }, function () {
+      db.collection('post').insertOne({ _id: (totalResult + 1), category: req.body.category, font:req.body.font , title: req.body.title, src: req.body.filename }, function () {
 
         db.collection('counter').updateOne({ name: 'total' }, { $inc: { totalPost: 1 } }, (error, result) => {
           if (error) { return console.log(error) }
@@ -101,8 +97,28 @@ app.delete('/delete', (req, res) => {
 
 
 })
+
+app.get('/categorys',(req, res)=>{
+  db.collection('category').find().toArray((error, result)=>{
+    res.send(result).json;
+  })
+})
+
+app.get('/test',(req, res)=>{
+  db.collection('post').findOne({ title :  "test" }, (error, result)=>{
+    res.json(result);
+  })
+})
+
+app.get('/image/:imageName', (req, res)=>{
+  res.sendFile(__dirname + '/public/image/' + req.params.imageName);
+})
+
 // react build 후 페이지
-// app.use(express.static(path.join(__dirname, 'react/build')));
-// app.get('/', (req, res)=>{
-//   res.sendFile(path.join(__dirname, '/react/build/index.html'));
-// });
+app.use(express.static(path.join(__dirname, 'react-project/build')));
+app.get('/', (req, res)=>{
+  res.sendFile(path.join(__dirname, '/react-project/build/index.html'));
+});
+app.get('*', function (요청, 응답) {
+  응답.sendFile(path.join(__dirname, '/react-project/build/index.html'));
+});
