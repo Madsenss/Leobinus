@@ -19,7 +19,7 @@ function AdminNav(props) {
 
         <Navbar.Brand onClick={() => { navigate('/admin') }}>
           <img
-            src="/logo.jpg"
+            src="http://localhost:8080/image/logo.jpg"
             width="30"
             height="30"
             className="d-inline-block align-top"
@@ -89,7 +89,7 @@ function WriteModal(props) {
 
               <Col sm="10">
                 <Form.Select name="font">
-                  <option>NanumMyeoungjo</option>
+                  <option>NanumMyeongjo</option>
                   <option>NanumGothic</option>
                 </Form.Select>
               </Col>
@@ -108,7 +108,7 @@ function WriteModal(props) {
 
             </Form.Group>
             {/* imageUpload */}
-            <Form.Group as={Row} className="mb-1" id="fileform">
+            <Form.Group as={Row} controlId="formFileMultiple" className="mb-1" id="fileform">
 
               <Form.Label column sm="2">
                 image

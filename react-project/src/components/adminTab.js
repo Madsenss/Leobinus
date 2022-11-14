@@ -1,17 +1,18 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom'
 import { Container, Table, Tab, Tabs, Button, Modal, Form, Row, Col } from 'react-bootstrap';
 
 import ChangeCircleIcon from '@mui/icons-material/ChangeCircle';
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 import SettingsIcon from '@mui/icons-material/Settings';
 
-import datas from '../dbdata/data.js';
-
-
 function AdminTab(props) {
+  let navigate = useNavigate();
   const [modifyShow, setModifyShow] = useState(false);
   const [deleteShow, setDeleteShow] = useState(false);
   const [title, setTitle] = useState(0);
+  const [mCategory, setMCategory] = useState(0);
+  const [id, setId] = useState(0);
   const [key, setKey] = useState('all');
   return (
 
@@ -35,21 +36,26 @@ function AdminTab(props) {
             </thead>
             <tbody>
               {
-                datas.map((item, i) => {
-                  return (
-                    <tr key={i}>
-                      <td>{item.category}</td>
-                      <td>{item.title}</td>
-                      <td><img src={item.src} className="preview" alt="preview" /></td>
-                      <td>
-                        <ChangeCircleIcon style={{ fontSize: '3vh' }} onClick={() => { setModifyShow(true); setTitle(item.id - 1) }} />
-                        <RemoveCircleIcon style={{ fontSize: '3vh' }} onClick={() => { setDeleteShow(true); setTitle(item.id - 1) }} />
-                      </td>
-                    </tr>
-                  )
-                })
+                props.postData != null
+                ? props.postData.map((item, i)=>{
+                    return(
+                      <tr key={i}>
+                        <td>{item.category}</td>
+                        <td>{item.title}</td>
+                        {
+                          typeof(item.src) === 'string'
+                          ? <td><img src={`http://localhost:8080/image/${item.src}`} className="preview" onClick={()=>{navigate(`/detail/${item._id}`)}} alt="preview" /></td>
+                          : <td><img src={`http://localhost:8080/image/${item.src[0]}`} className="preview" onClick={()=>{navigate(`/detail/${item._id}`)}} alt="preview" /></td>
+                        }
+                        <td>
+                          <ChangeCircleIcon style={{ fontSize: '3vh' }} onClick={() => { setModifyShow(true); setTitle(item.title); setMCategory(item.category); }} />
+                          <RemoveCircleIcon style={{ fontSize: '3vh' }} onClick={() => { setDeleteShow(true); setTitle(item.title) }} />
+                        </td>
+                      </tr>
+                    )
+                  })
+                : null
               }
-
             </tbody>
           </Table>
         </Tab>
@@ -61,8 +67,8 @@ function AdminTab(props) {
               return (
                 <Tab eventKey={item.category} title={item.category}>
                   <Table size="sm" className="mt-5">
-                    <thead key={i}>
-                      <tr>
+                    <thead>
+                      <tr key={i}>
                         <th>Category</th>
                         <th>Title</th>
                         <th>Preview</th>
@@ -71,19 +77,25 @@ function AdminTab(props) {
                     </thead>
                     <tbody>
                       {
-                        datas.filter(v => v.category === item.category).map((item, i) => {
-                          return (
-                            <tr key={i}>
-                              <td>{item.category}</td>
-                              <td>{item.title}</td>
-                              <td><img src={item.src} className="preview" alt="preview" /></td>
-                              <td>
-                                <ChangeCircleIcon style={{ fontSize: '3vh' }} onClick={() => { setModifyShow(true); setTitle(item.id - 1) }} />
-                                <RemoveCircleIcon style={{ fontSize: '3vh' }} onClick={() => { setDeleteShow(true); setTitle(item.id - 1) }} />
-                              </td>
-                            </tr>
-                          )
-                        })
+                        props.postData != null
+                        ? props.postData.filter(v => v.category === item.category).map((item, i) => {
+                            return (
+                              <tr key={i}>
+                                <td>{item.category}</td>
+                                <td>{item.title}</td>
+                                {
+                                  typeof(item.src) === 'string'
+                                  ? <td><img src={`http://localhost:8080/image/${item.src}`} className="preview" onClick={()=>{navigate(`/detail/${item._id}`)}} alt="preview" /></td>
+                                  : <td><img src={`http://localhost:8080/image/${item.src[0]}`} className="preview" onClick={()=>{navigate(`/detail/${item._id}`)}} alt="preview" /></td>
+                                }
+                                <td>
+                                  <ChangeCircleIcon style={{ fontSize: '3vh' }} onClick={() => { setModifyShow(true); setTitle(item.title); setMCategory(item.category); }} />
+                                  <RemoveCircleIcon style={{ fontSize: '3vh' }} onClick={() => { setDeleteShow(true); setTitle(item.title) }} />
+                                </td>
+                              </tr>
+                            )
+                          })
+                        : null
                       }
 
                     </tbody>
@@ -164,13 +176,14 @@ function AdminTab(props) {
         </Tab>
       </Tabs>
 
-      <ModifyModal categorys={props.categorys} title={title} show={modifyShow} onHide={() => setModifyShow(false)} />
+      <ModifyModal categorys={props.categorys} mcategory={mCategory} title={title} show={modifyShow} onHide={() => setModifyShow(false)} />
       <DeleteModal categorys={props.categorys} title={title} show={deleteShow} onHide={() => setDeleteShow(false)} />
 
     </Container>
 
   );
 }
+
 function ModifyModal(props) {
   return (
     <Form action=''>
@@ -189,7 +202,8 @@ function ModifyModal(props) {
                 category
               </Form.Label>
               <Col sm="10">
-                <Form.Select value={datas[props.title].category}>
+                {/* <Form.Select value={datas[props.title].category}> */}
+                <Form.Select defaultValue={props.mcategory}>
                   {
                     props.categorys != null
                     ? props.categorys.map((item, i) => {
@@ -208,7 +222,7 @@ function ModifyModal(props) {
                 title
               </Form.Label>
               <Col sm="10">
-                <Form.Control value={datas[props.title].title} />
+                <Form.Control defaultValue={props.title} />
               </Col>
             </Form.Group>
 
@@ -246,12 +260,12 @@ function DeleteModal(props) {
 
         <Modal.Body>
           <Container>
-            <Form.Group as={Row} className="mb-3">
+            <Form.Group as={Row}>
               <Form.Label column sm="2">
                 title
               </Form.Label>
               <Col sm="10">
-                <Form.Control value={datas[props.title].title} readOnly />
+                <Form.Control value={props.title} readOnly />
               </Col>
             </Form.Group>
           </Container>

@@ -38,7 +38,7 @@ var upload = multer({
   storage: storage,
   fileFilter: (req, file, callback) => {
     var ext = path.extname(file.originalname);
-    if (ext !== '.png' && ext !== '.jpg' && ext !== '.jpeg') {
+    if (ext !== '.png' && ext !== '.jpg' && ext !== '.jpeg' && ext !== '.PNG' && ext !== '.JPG' && ext !== '.JPEG') {
       return callback(new Error('PNG, JPG, JPEG만 업로드하세요'))
     }
     callback(null, true)
@@ -104,9 +104,9 @@ app.get('/categorys',(req, res)=>{
   })
 })
 
-app.get('/test',(req, res)=>{
-  db.collection('post').findOne({ title :  "test" }, (error, result)=>{
-    res.json(result);
+app.get('/postdata',(req, res)=>{
+  db.collection('post').find().toArray((error, result)=>{
+    res.send(result).json;
   })
 })
 
