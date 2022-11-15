@@ -7,17 +7,17 @@ function Login() {
     <div className="loginBoxOuter">
       <div className="loginBoxInner">
       <Container fluid>
-        <Form>
+        <Form method="POST" action="/login" id="login">
           <Form.Group className="mb-3" controlId="formBasicEmail">
             <Form.Label>ID</Form.Label>
-            <Form.Control type="email" placeholder="Enter ID" />
+            <Form.Control type="id" placeholder="Enter ID" name="id" />
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="formBasicPassword">
             <Form.Label>Password</Form.Label>
-            <Form.Control type="password" placeholder="Password" />
+            <Form.Control type="password" placeholder="Password" name="password" />
           </Form.Group>
-          <Button variant="secondary" type="submit" onClick={() => { navigate('/admin') }}>
+          <Button variant="secondary" type="submit" form="login" oncl>
             Login
           </Button>
         </Form>

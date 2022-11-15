@@ -36,16 +36,16 @@ function AdminTab(props) {
             </thead>
             <tbody>
               {
-                props.postData != null
-                ? props.postData.map((item, i)=>{
-                    return(
+                props.postData && props.postData
+                  ? props.postData && props.postData.map((item, i) => {
+                    return (
                       <tr key={i}>
                         <td>{item.category}</td>
                         <td>{item.title}</td>
                         {
-                          typeof(item.src) === 'string'
-                          ? <td><img src={`http://localhost:8080/image/${item.src}`} className="preview" onClick={()=>{navigate(`/detail/${item._id}`)}} alt="preview" /></td>
-                          : <td><img src={`http://localhost:8080/image/${item.src[0]}`} className="preview" onClick={()=>{navigate(`/detail/${item._id}`)}} alt="preview" /></td>
+                          typeof (item.src) === 'string'
+                            ? <td><img src={`http://localhost:8080/image/${item.src}`} className="preview" onClick={() => { navigate(`/detail/${item._id}`) }} alt="preview" /></td>
+                            : <td><img src={`http://localhost:8080/image/${item.src[0]}`} className="preview" onClick={() => { navigate(`/detail/${item._id}`) }} alt="preview" /></td>
                         }
                         <td>
                           <ChangeCircleIcon style={{ fontSize: '3vh' }} onClick={() => { setModifyShow(true); setTitle(item.title); setMCategory(item.category); }} />
@@ -54,7 +54,7 @@ function AdminTab(props) {
                       </tr>
                     )
                   })
-                : null
+                  : null
               }
             </tbody>
           </Table>
@@ -62,7 +62,7 @@ function AdminTab(props) {
 
         {/* another tab */}
         {
-          props.categorys != null
+          props.categorys !== undefined
             ? props.categorys.sort(props.categorys.ordernum).map((item, i) => {
               return (
                 <Tab eventKey={item.category} title={item.category}>
@@ -77,16 +77,16 @@ function AdminTab(props) {
                     </thead>
                     <tbody>
                       {
-                        props.postData != null
-                        ? props.postData.filter(v => v.category === item.category).map((item, i) => {
+                        props.postData !== undefined
+                          ? props.postData.filter(v => v.category === item.category).map((item, i) => {
                             return (
                               <tr key={i}>
                                 <td>{item.category}</td>
                                 <td>{item.title}</td>
                                 {
-                                  typeof(item.src) === 'string'
-                                  ? <td><img src={`http://localhost:8080/image/${item.src}`} className="preview" onClick={()=>{navigate(`/detail/${item._id}`)}} alt="preview" /></td>
-                                  : <td><img src={`http://localhost:8080/image/${item.src[0]}`} className="preview" onClick={()=>{navigate(`/detail/${item._id}`)}} alt="preview" /></td>
+                                  typeof (item.src) === 'string'
+                                    ? <td><img src={`http://localhost:8080/image/${item.src}`} className="preview" onClick={() => { navigate(`/detail/${item._id}`) }} alt="preview" /></td>
+                                    : <td><img src={`http://localhost:8080/image/${item.src[0]}`} className="preview" onClick={() => { navigate(`/detail/${item._id}`) }} alt="preview" /></td>
                                 }
                                 <td>
                                   <ChangeCircleIcon style={{ fontSize: '3vh' }} onClick={() => { setModifyShow(true); setTitle(item.title); setMCategory(item.category); }} />
@@ -95,7 +95,7 @@ function AdminTab(props) {
                               </tr>
                             )
                           })
-                        : null
+                          : null
                       }
 
                     </tbody>
@@ -127,13 +127,13 @@ function AdminTab(props) {
               <Col sm="8">
                 <Form.Select>
                   {
-                    props.categorys != null
-                    ? props.categorys.map((item, i) => {
+                    props.categorys !== undefined
+                      ? props.categorys.map((item, i) => {
                         return (
                           <option key={i} value={item.category}>{item.category}</option>
                         )
                       })
-                    : null
+                      : null
 
                   }
                 </Form.Select>
@@ -147,8 +147,8 @@ function AdminTab(props) {
                 탭 순서 변경 ( about - all - <span style={{ fontWeight: 'bold', color: 'red' }}>Switch</span> - shop )
               </Form.Label>
               {
-                props.categorys != null
-                ? props.categorys.sort(props.categorys.ordernum).map((item, i) => {
+                props.categorys !== undefined
+                  ? props.categorys.sort(props.categorys.ordernum).map((item, i) => {
                     return (
                       <>
                         <Form.Label column sm="3" key={i}>
@@ -162,7 +162,7 @@ function AdminTab(props) {
                       </>
                     )
                   })
-                : null          
+                  : null
               }
 
               <Col sm="8">
@@ -206,12 +206,12 @@ function ModifyModal(props) {
                 <Form.Select defaultValue={props.mcategory}>
                   {
                     props.categorys != null
-                    ? props.categorys.map((item, i) => {
+                      ? props.categorys.map((item, i) => {
                         return (
                           <option key={i}>{item.category}</option>
                         )
                       })
-                    :null   
+                      : null
                   }
                 </Form.Select>
               </Col>
@@ -247,15 +247,13 @@ function ModifyModal(props) {
 
 function DeleteModal(props) {
   return (
-
-    <Form action=''>
-
-      <Modal
-        {...props}
-        size="md"
-        aria-labelledby="contained-modal-title-vcenter"
-        centered
-      >
+    <Modal
+      {...props}
+      size="md"
+      aria-labelledby="contained-modal-title-vcenter"
+      centered
+    >
+      <Form action=''>
         <Modal.Header style={{ borderBottom: 'none' }} closeButton />
 
         <Modal.Body>
@@ -274,9 +272,9 @@ function DeleteModal(props) {
         <Modal.Footer style={{ borderTop: 'none' }}>
           <Button className="me-3" variant="outline-danger" onClick={props.onHide} type="summit">삭제</Button>
         </Modal.Footer>
+      </Form>
+    </Modal>
 
-      </Modal>
-    </Form>
   );
 }
 

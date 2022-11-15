@@ -12,7 +12,7 @@ function Posts(props) {
   let navigate = useNavigate();
   let pathName = window.location.pathname;
   let [path] = useState([]);
-  if (props.categorys != undefined) {
+  if (props.categorys !== undefined) {
     for (let i = 0; i < props.categorys.length; i++) {
       path.push("/" + props.categorys[i].category);
     }
@@ -28,7 +28,7 @@ function Posts(props) {
       >
         {
           pathName === "/"
-            ? props.postData != undefined
+            ? props.postData !== undefined
               ? props.postData.map((item, i) => {
                 return (
                   <div key={i}>
@@ -51,7 +51,7 @@ function Posts(props) {
         }
         {
           pathName === "/all"
-            ? props.postData != undefined
+            ? props.postData !== undefined
               ? props.postData.map((item, i) => {
                 return (
                   <div key={i}>
@@ -74,11 +74,11 @@ function Posts(props) {
         }
 
         {
-          newPath != undefined
+          newPath !== undefined
           ? newPath && newPath.map((item)=>{
             return(
               pathName === item
-              ? props.postData != undefined
+              ? props.postData !== undefined
                 ? props.postData.filter(v=> v.category === item.substring(1).toString()).map((item, i)=>{
                     return(
                       <div key={i}>

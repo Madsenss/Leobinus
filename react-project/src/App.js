@@ -15,32 +15,24 @@ import Login from './components/login';
 function App() {
   let [categorys, setCategorys] = useState();
   let [postData, setPostData] = useState();
-  let pathName = window.location.pathname;
- 
   useEffect(() => {
     axios.get('http://localhost:8080/categorys').then((result) => {
-
-      let copy = [...result.data];
-      setCategorys(copy);
+      setCategorys(result.data);
     })
     .catch(() => {
       console.log('카테고리 로딩에 실패했습니다.')
     })
 
     axios.get('http://localhost:8080/postdata').then((result) => {
-      setPostData(result.data);
+      setPostData(result.data); 
     })
     .catch(() => {
-      console.log('test 로딩에 실패했습니다.')
+      console.log('데이터 로딩에 실패했습니다.')
     })
 
   }, [])
-
-
   return (
-    // http://localhost:8080/image/logo7.jpg
     <div className="App">
-
       <Routes>
         {/* 사용자 페이지 영역 */}
         <Route path="/" element={<><MainNav categorys={categorys} /><Posts categorys={categorys} postData={postData} /></>} />
@@ -65,8 +57,6 @@ function App() {
         <Route path="/mail" element={<><AdminNav categorys={categorys} /><div>mail</div></>}/>
 
       </Routes>
-
-
     </div >
   );
 }

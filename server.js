@@ -3,6 +3,9 @@ const app = express();
 const path = require('path');
 const MongoClient = require('mongodb').MongoClient;
 const fs = require("fs");
+const passport = require('passport');
+const LocalStrategy = require('passport-local').Strategy;
+const session = require('express-session');
 
 app.use(express.urlencoded({ extended: true }))
 
@@ -11,7 +14,12 @@ var cors = require('cors');
 app.use(cors());
 var db;
 
+app.use(session({secret : '비밀코드', resave : true, saveUninitialized: false}));
+app.use(passport.initialize());
+app.use(passport.session()); 
 
+
+// DB connect
 MongoClient.connect('mongodb+srv://admin:narcisse97@cluster0.rwbri54.mongodb.net/?retryWrites=true&w=majority', (error, client) => {
   if (error) return console.log(error);
   db = client.db('leobinus');
@@ -20,18 +28,38 @@ MongoClient.connect('mongodb+srv://admin:narcisse97@cluster0.rwbri54.mongodb.net
   });
 });
 
+// DB 데이터 송신
+app.get('/categorys',(req, res)=>{
+  db.collection('category').find().toArray((error, result)=>{
+    res.send(result).json;
+  })
+})
 
+app.get('/postdata',(req, res)=>{
+  db.collection('post').find().toArray((error, result)=>{
+    res.send(result).json;
+  })
+})
+
+app.get('/image/:imageName', (req, res)=>{
+  res.sendFile(__dirname + '/public/image/' + req.params.imageName);
+})
+
+
+// Test ejs page
+app.get('/upload', function (req, res) {
+  res.render('upload.ejs')
+});
+
+// 이미지 수신, 저장
 let multer = require('multer');
-const e = require('express');
 var storage = multer.diskStorage({
-
   destination: function (req, file, cb) {
     cb(null, './public/image')
   },
   filename: function (req, file, cb) {
-    cb(null, file.originalname)
+    cb(null, file.originalname = Buffer.from(file.originalname, 'latin1').toString('utf8'))
   }
-
 });
 
 var upload = multer({
@@ -48,10 +76,63 @@ var upload = multer({
   }
 });
 
-app.get('/upload', function (req, res) {
-  res.render('upload.ejs')
+
+
+
+
+// id, pw 검사
+passport.use(new LocalStrategy({
+  usernameField: 'id',
+  passwordField: 'password',
+  session: true,
+  passReqToCallback: false,
+}, function (id, password, done) {
+  db.collection('login').findOne({ id: id }, function (error, result) {
+    if (error) return done(error)
+
+    if (!result) return done(null, false, { message: '존재하지 않는 아이디입니다.' })
+    if (password == result.pw) {
+      return done(null, result)
+    } else {
+      return done(null, false, { message: '비밀번호가 틀렸습니다.' })
+    }
+  })
+}));
+
+// login 여부 검사
+function Login(req, res, next){
+  if(req.user){
+    next()
+  } else {
+    res.send('로그인이 필요한 페이지입니다.')
+  }
+}
+
+// session 저장
+passport.serializeUser(function (user, done) {
+  done(null, user.id)
 });
 
+passport.deserializeUser(function (id, done) {
+  db.collection('login').findOne({ id: id}, (error, result)=>{
+    done(result, {})
+  })
+}); 
+
+
+// Login 요청
+// app.post('/login', passport.authenticate('local', {failureRedirect : '/fail'}), function(req, res){
+//   res.json(res)
+// });
+
+// app.get('/admin', Login, (req, res)=>{
+//  res.send(req.user)
+// })
+
+
+
+
+// 게시물 작성 요청
 app.post('/upload', upload.array('filename', 20), (req, res) => {
   if (req.body.title == (null || "")) {
     return res.send(`<script type="text/javascript">alert("타이틀 내용이 없습니다"); history.go(-1);</script>`);;
@@ -73,9 +154,10 @@ app.post('/upload', upload.array('filename', 20), (req, res) => {
 
     });
   }
-
-
 });
+
+
+// 게시물 삭제요청
 // db에서 받아온 이미지 이름 .확장자로 다중삭제까지 구현.
 // 클라이언트가 db에 접근할일이 없으니 파일명을 바꾼다거나 하는 버그는 배제 ( 현재 삭제파일은 1개인데 반복문으로 2개 요청하면 하나는 삭제되고 해당파일 없다고 리턴함. 이부분 고민)
 app.delete('/delete', (req, res) => {
@@ -87,38 +169,21 @@ app.delete('/delete', (req, res) => {
       fs.unlinkSync(testpath);
       console.log(testpath);
     }
-    
-      
+       
     res.send('삭제 완료');
   } catch (error) {
     res.send('해당 파일이 없습니다');
   }
   // const path = './public/image/logo4.jpg'
-
-
 })
 
-app.get('/categorys',(req, res)=>{
-  db.collection('category').find().toArray((error, result)=>{
-    res.send(result).json;
-  })
-})
 
-app.get('/postdata',(req, res)=>{
-  db.collection('post').find().toArray((error, result)=>{
-    res.send(result).json;
-  })
-})
-
-app.get('/image/:imageName', (req, res)=>{
-  res.sendFile(__dirname + '/public/image/' + req.params.imageName);
-})
 
 // react build 후 페이지
 app.use(express.static(path.join(__dirname, 'react-project/build')));
 app.get('/', (req, res)=>{
   res.sendFile(path.join(__dirname, '/react-project/build/index.html'));
 });
-app.get('*', function (요청, 응답) {
-  응답.sendFile(path.join(__dirname, '/react-project/build/index.html'));
+app.get('*', function (req, res) {
+  res.sendFile(path.join(__dirname, '/react-project/build/index.html'));
 });

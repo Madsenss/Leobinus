@@ -53,7 +53,7 @@ function WriteModal(props) {
       aria-labelledby="contained-modal-title-vcenter"
       centered
     >
-      <Form method="POST" action="http://localhost:8080/upload" encType="multipart/form-data" id="write">
+      <Form method="POST" action="http://localhost:8080/upload" encType="multipart/form-data" id="write" acceptCharset="UTF-8">
         <Modal.Header style={{ borderBottom: 'none' }} closeButton />
 
         <Modal.Body>
@@ -68,7 +68,7 @@ function WriteModal(props) {
               <Col sm="10">
                 <Form.Select name="category">
                   {
-                    props.categorys != null
+                    props.categorys && props.categorys
                       ? props.categorys.sort(props.categorys.ordernum).map((item, i) => {
                         return (
                           <option name={item.category} key={i} value={item.category}>{item.category}</option>
@@ -115,7 +115,7 @@ function WriteModal(props) {
               </Form.Label>
 
               <Col sm="10">
-                <Form.Control type="file" multiple id="upfile" name="filename" onChange={() => {
+                <Form.Control type="file" multiple id="upfile" name="filename" acceptCharset="UTF-8" onChange={() => {
                   var files = document.getElementById('upfile').files;
                   for (var i = 0; i < files.length; i++) {
                     var a = `<input type="hidden" name="filename" value="${files[i].name}" />`

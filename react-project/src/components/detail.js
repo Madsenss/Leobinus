@@ -36,17 +36,49 @@ function Prev() {
 function Detail(props) {
   let navigate = useNavigate();
   let { id } = useParams();
+
+  const [srcType, setSrcType] = useState();
+  const [find, setFind] = useState();
+  const [title, setTitle] = useState();
+
+  useEffect(()=>{
+    if( props.postData != null && props.postData != undefined){
+      setSrcType(typeof(props.postData.find( function(x) {return x._id == id} ).src));
+    }
+    if( props.postData != null && props.postData != undefined){
+      setFind(props.postData.find( function(x) {return x._id == id} ).src);
+    }
+    if( props.postData != null && props.postData != undefined){
+      setTitle(props.postData.find( function(x) {return x._id == id} ).title);
+    }
+  },[props.postData])
+
   return (
     <>
+      {/* image slider */}
       <Slider {...settings}>
-
         {
-          props.postData != undefined
-            ? typeof (props.postData.find(function (x) { return x._id == id }).src) == 'string'
+          find == find && srcType == srcType
+          ? srcType == 'string'
+            ? <div className='imgbox'>
+                <img src={`http://localhost:8080/image/${find}`} alt={id} />
+              </div>
+            : find && find.map((item, i)=>{
+                return(
+                  <div className='imgbox' key={i}>
+                    <img src={`http://localhost:8080/image/${item}`} alt={id} />
+                  </div>
+                )
+              })
+          : null
+        }
+        {/* {
+          props.postData !== undefined && props.postData != null && props.postData !== 'undefined'
+            ? typeof(props.postData.find(function (x) { return x._id === id }).src) == 'string'
               ? <div className='imgbox'>
-                <img src={`http://localhost:8080/image/${props.postData.find(function (x) { return x._id == id }).src}`} alt={id} />
+                <img src={`http://localhost:8080/image/${props.postData.find(function (x) { return x._id === id }).src}`} alt={id} />
                 </div>
-              : props.postData.find(function (x) { return x._id == id }).src.map((item, i) => {
+              : props.postData.find(function (x) { return x._id === id }).src.map((item, i) => {
                   return (
                     <div className='imgbox' key={i}>
                       <img src={`http://localhost:8080/image/${item}`} alt={id} />
@@ -54,7 +86,7 @@ function Detail(props) {
                   )
                 })
             : null
-        }
+        } */}
       </Slider>
       {/* 하단 fixed title, arrow box */}
       <Container fluid>
@@ -62,9 +94,7 @@ function Detail(props) {
           <Row >
             <Col className="title">
               {
-                props.postData != undefined
-                  ? props.postData.find(function (x) { return x._id == id }).title
-                  : null
+                title && title
               }
             </Col>
             <Col></Col>
