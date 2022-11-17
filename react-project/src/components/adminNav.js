@@ -7,7 +7,7 @@ import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
 import ListAltIcon from '@mui/icons-material/ListAlt';
 import MailOutlineIcon from '@mui/icons-material/MailOutline';
 import LogoutIcon from '@mui/icons-material/Logout';
-
+import axios from 'axios';
 
 function AdminNav(props) {
   let navigate = useNavigate();
@@ -16,7 +16,7 @@ function AdminNav(props) {
     <Navbar>
 
       <Container>
-
+        
         <Navbar.Brand onClick={() => { navigate('/admin') }}>
           <img
             src="http://localhost:8080/image/logo.jpg"
@@ -34,7 +34,13 @@ function AdminNav(props) {
             <AddAPhotoIcon onClick={() => { setModalShow(true) }} />
           </Nav.Link>
           <Nav.Link onClick={() => { navigate('/mail') }}><MailOutlineIcon /></Nav.Link>
-          <Nav.Link onClick={() => { navigate('/login') }}><LogoutIcon /></Nav.Link>
+          <Nav.Link onClick={() => {             
+            axios.get('http://localhost:8080/logout').then(result =>{
+              alert(result.data);
+              navigate('/login');
+            })
+            .catch();
+          }}><LogoutIcon /></Nav.Link>
         </Nav>
 
       </Container>

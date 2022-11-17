@@ -5,6 +5,8 @@ import { Container, Table, Tab, Tabs, Button, Modal, Form, Row, Col } from 'reac
 import ChangeCircleIcon from '@mui/icons-material/ChangeCircle';
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 import SettingsIcon from '@mui/icons-material/Settings';
+import axios from 'axios';
+import { Paid } from '@mui/icons-material';
 
 function AdminTab(props) {
   let navigate = useNavigate();
@@ -49,7 +51,7 @@ function AdminTab(props) {
                         }
                         <td>
                           <ChangeCircleIcon style={{ fontSize: '3vh' }} onClick={() => { setModifyShow(true); setTitle(item.title); setMCategory(item.category); }} />
-                          <RemoveCircleIcon style={{ fontSize: '3vh' }} onClick={() => { setDeleteShow(true); setTitle(item.title) }} />
+                          <RemoveCircleIcon style={{ fontSize: '3vh' }} onClick={() => { setDeleteShow(true); setTitle(item.title); setId(item._id) }} />
                         </td>
                       </tr>
                     )
@@ -65,10 +67,10 @@ function AdminTab(props) {
           props.categorys !== undefined
             ? props.categorys.sort(props.categorys.ordernum).map((item, i) => {
               return (
-                <Tab eventKey={item.category} title={item.category}>
+                <Tab eventKey={item.category} title={item.category} key={i}>
                   <Table size="sm" className="mt-5">
                     <thead>
-                      <tr key={i}>
+                      <tr>
                         <th>Category</th>
                         <th>Title</th>
                         <th>Preview</th>
@@ -177,7 +179,7 @@ function AdminTab(props) {
       </Tabs>
 
       <ModifyModal categorys={props.categorys} mcategory={mCategory} title={title} show={modifyShow} onHide={() => setModifyShow(false)} />
-      <DeleteModal categorys={props.categorys} title={title} show={deleteShow} onHide={() => setDeleteShow(false)} />
+      <DeleteModal categorys={props.categorys} title={title} id={id} show={deleteShow} onHide={() => setDeleteShow(false)} />
 
     </Container>
 
@@ -246,6 +248,7 @@ function ModifyModal(props) {
 }
 
 function DeleteModal(props) {
+  let navigate = useNavigate();
   return (
     <Modal
       {...props}
@@ -270,7 +273,20 @@ function DeleteModal(props) {
         </Modal.Body>
 
         <Modal.Footer style={{ borderTop: 'none' }}>
-          <Button className="me-3" variant="outline-danger" onClick={props.onHide} type="summit">삭제</Button>
+          <Button className="me-3" variant="outline-danger" onClick={()=>{
+            axios.delete('http://localhost:8080/test', {
+              data : {
+                id : props.id
+              }
+            }).then((result)=>{
+              alert(result.data);
+              props.onHide();
+              window.location.replace('/admin')             
+            })
+            .catch((error)=>{
+              alert(error);
+            })
+          }}>삭제</Button>
         </Modal.Footer>
       </Form>
     </Modal>

@@ -77,8 +77,14 @@ var upload = multer({
 });
 
 
-
-
+// login 여부 검사
+function Login(req, res, next){
+  if(req.user){
+    next()
+  } else {
+    res.send('로그인이 필요한 페이지입니다.')
+  }
+}
 
 // id, pw 검사
 passport.use(new LocalStrategy({
@@ -99,14 +105,6 @@ passport.use(new LocalStrategy({
   })
 }));
 
-// login 여부 검사
-function Login(req, res, next){
-  if(req.user){
-    next()
-  } else {
-    res.send('로그인이 필요한 페이지입니다.')
-  }
-}
 
 // session 저장
 passport.serializeUser(function (user, done) {
@@ -114,26 +112,37 @@ passport.serializeUser(function (user, done) {
 });
 
 passport.deserializeUser(function (id, done) {
-  db.collection('login').findOne({ id: id}, (error, result)=>{
-    done(result, {})
-  })
-}); 
+  done(null, {})
+});  
 
 
 // Login 요청
-// app.post('/login', passport.authenticate('local', {failureRedirect : '/fail'}), function(req, res){
-//   res.json(res)
-// });
+app.post('/login', passport.authenticate('local', {failureRedirect : '/fail'}), function(req, res){
+  res.send('good');
+});
 
-// app.get('/admin', Login, (req, res)=>{
-//  res.send(req.user)
-// })
+app.get('/admin', Login, (req, res)=>{
+  res.sendFile(path.join(__dirname, '/react-project/build/index.html'));
+})
 
+app.get('/posts', Login, (req, res)=>{
+  res.sendFile(path.join(__dirname, '/react-project/build/index.html'));
+})
 
+app.get('/mail', Login, (req, res)=>{
+  res.sendFile(path.join(__dirname, '/react-project/build/index.html'));
+})
 
+app.get('/logout', function(req, res, next) {
+  req.logout(function(err) {
+    if (err) { return next(err); }
+    res.send('로그아웃 되었습니다.');
+  });
+});
 
 // 게시물 작성 요청
 app.post('/upload', upload.array('filename', 20), (req, res) => {
+
   if (req.body.title == (null || "")) {
     return res.send(`<script type="text/javascript">alert("타이틀 내용이 없습니다"); history.go(-1);</script>`);;
   } else if (req.body.filename == null) {
@@ -151,8 +160,8 @@ app.post('/upload', upload.array('filename', 20), (req, res) => {
         });
 
       });
-
     });
+
   }
 });
 
@@ -177,6 +186,46 @@ app.delete('/delete', (req, res) => {
   // const path = './public/image/logo4.jpg'
 })
 
+app.delete('/test', (req, res)=>{
+
+  console.log(req.body)
+
+  req.body.id = parseInt(req.body.id);
+  db.collection('post').findOne({ _id : req.body.id }, (error, result)=>{
+    if (error) { return res.send(error) }
+
+    if(typeof result.src == 'string'){
+      var imageData = result.src;
+      console.log(imageData);
+      try{
+        fs.unlinkSync(`./public/image/${imageData}`);
+        db.collection('post').deleteOne({_id : req.body.id}, (error, result)=>{
+          console.log(result);
+        })
+        res.send('삭제완료');
+      }
+      catch (error) {
+        res.send('해당 파일이 존재하지 않습니다.');
+      }
+      
+    } else {
+      var imageData = result.src;
+      try{
+        for(let i=0; i<imageData.length; i++){
+          fs.unlinkSync(`./public/image/${imageData[i]}`);          
+        }
+        db.collection('post').deleteOne({_id : req.body.id}, (error, result)=>{
+          if (error) { return res.send(error) }
+          console.log(result);
+        })
+        res.send('삭제완료');
+      }
+      catch (error) {
+        res.send('해당 파일이 존재하지 않습니다.');
+      }
+    }
+  })
+})
 
 
 // react build 후 페이지

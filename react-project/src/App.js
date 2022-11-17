@@ -1,7 +1,7 @@
 import './App.css';
 
 import { useEffect, useState } from 'react';
-import { Routes, Route } from 'react-router-dom'
+import { Routes, Route, Navigate, useNavigate } from 'react-router-dom'
 
 import axios from 'axios'
 
@@ -15,6 +15,7 @@ import Login from './components/login';
 function App() {
   let [categorys, setCategorys] = useState();
   let [postData, setPostData] = useState();
+
   useEffect(() => {
     axios.get('http://localhost:8080/categorys').then((result) => {
       setCategorys(result.data);
@@ -29,8 +30,9 @@ function App() {
     .catch(() => {
       console.log('데이터 로딩에 실패했습니다.')
     })
-
   }, [])
+
+
   return (
     <div className="App">
       <Routes>

@@ -62,7 +62,7 @@ Link {
 }
 
 .my-masonry-grid_column>div>.wrap img:hover {
-  filter: brightness(90%);
+  filter: opacity(20%);
   transform: scale(1.02);
   z-index: 50;
 }
@@ -95,14 +95,15 @@ Link {
 .wrap:hover h3 {
   font-size: 1.3vw;
   display: block;
-  color: white;
+  color: black;
 }
 
 .wrap:hover h2 {
   font-size: 2.5vh;
+  font-weight: bold;
   display: block;
   margin-top: 4vw;
-  color: white;
+  color: black;
 }
 
 .fixed {
