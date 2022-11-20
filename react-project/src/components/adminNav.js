@@ -124,8 +124,8 @@ function WriteModal(props) {
                 <Form.Control type="file" multiple id="upfile" name="filename" acceptCharset="UTF-8" onChange={() => {
                   var files = document.getElementById('upfile').files;
                   for (var i = 0; i < files.length; i++) {
-                    var a = `<input type="hidden" name="filename" value="${files[i].name}" />`
-                    document.querySelector("#fileform").insertAdjacentHTML('beforeend', a);
+                    var hide = `<input type="hidden" name="filename" value="${files[i].name}" />`
+                    document.querySelector("#fileform").insertAdjacentHTML('beforeend', hide);
                   }
                 }} />
               </Col>

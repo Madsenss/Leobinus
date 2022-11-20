@@ -6,7 +6,6 @@ import ChangeCircleIcon from '@mui/icons-material/ChangeCircle';
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 import SettingsIcon from '@mui/icons-material/Settings';
 import axios from 'axios';
-import { Paid } from '@mui/icons-material';
 
 function AdminTab(props) {
   let navigate = useNavigate();
@@ -15,6 +14,7 @@ function AdminTab(props) {
   const [title, setTitle] = useState(0);
   const [mCategory, setMCategory] = useState(0);
   const [id, setId] = useState(0);
+  const [font, setFont] = useState(0);
   const [key, setKey] = useState('all');
   return (
 
@@ -50,7 +50,7 @@ function AdminTab(props) {
                             : <td><img src={`http://localhost:8080/image/${item.src[0]}`} className="preview" onClick={() => { navigate(`/detail/${item._id}`) }} alt="preview" /></td>
                         }
                         <td>
-                          <ChangeCircleIcon style={{ fontSize: '3vh' }} onClick={() => { setModifyShow(true); setTitle(item.title); setMCategory(item.category); }} />
+                          <ChangeCircleIcon style={{ fontSize: '3vh' }} onClick={() => { setModifyShow(true); setTitle(item.title); setId(item._id); setFont(item.font); setMCategory(item.category); }} />
                           <RemoveCircleIcon style={{ fontSize: '3vh' }} onClick={() => { setDeleteShow(true); setTitle(item.title); setId(item._id) }} />
                         </td>
                       </tr>
@@ -91,8 +91,8 @@ function AdminTab(props) {
                                     : <td><img src={`http://localhost:8080/image/${item.src[0]}`} className="preview" onClick={() => { navigate(`/detail/${item._id}`) }} alt="preview" /></td>
                                 }
                                 <td>
-                                  <ChangeCircleIcon style={{ fontSize: '3vh' }} onClick={() => { setModifyShow(true); setTitle(item.title); setMCategory(item.category); }} />
-                                  <RemoveCircleIcon style={{ fontSize: '3vh' }} onClick={() => { setDeleteShow(true); setTitle(item.title) }} />
+                                  <ChangeCircleIcon style={{ fontSize: '3vh' }} onClick={() => { setModifyShow(true); setTitle(item.title); setId(item._id); setFont(item.font); setMCategory(item.category); }} />
+                                  <RemoveCircleIcon style={{ fontSize: '3vh' }} onClick={() => { setDeleteShow(true); setTitle(item.title); setId(item._id) }} />
                                 </td>
                               </tr>
                             )
@@ -178,8 +178,8 @@ function AdminTab(props) {
         </Tab>
       </Tabs>
 
-      <ModifyModal categorys={props.categorys} mcategory={mCategory} title={title} show={modifyShow} onHide={() => setModifyShow(false)} />
-      <DeleteModal categorys={props.categorys} title={title} id={id} show={deleteShow} onHide={() => setDeleteShow(false)} />
+      <ModifyModal categorys={props.categorys} id={id} title={title} font={font} mcategory={mCategory}  show={modifyShow} onHide={() => setModifyShow(false)} />
+      <DeleteModal categorys={props.categorys} id={id} title={title} show={deleteShow} onHide={() => setDeleteShow(false)} />
 
     </Container>
 
@@ -188,24 +188,26 @@ function AdminTab(props) {
 
 function ModifyModal(props) {
   return (
-    <Form action=''>
       <Modal
         {...props}
         size="md"
         aria-labelledby="contained-modal-title-vcenter"
         centered
       >
+        <Form method="POST" action="http://localhost:8080/modify" encType="multipart/form-data" id="modify" acceptCharset="UTF-8">
         <Modal.Header style={{ borderBottom: 'none' }} closeButton />
 
         <Modal.Body>
           <Container>
+            <input type="hidden" value={props.id} name="id" />
+            {/* 카테고리 */}
             <Form.Group as={Row} className="mb-3">
               <Form.Label column sm="2">
                 category
               </Form.Label>
               <Col sm="10">
                 {/* <Form.Select value={datas[props.title].category}> */}
-                <Form.Select defaultValue={props.mcategory}>
+                <Form.Select defaultValue={props.mcategory} name="category">
                   {
                     props.categorys != null
                       ? props.categorys.map((item, i) => {
@@ -219,36 +221,85 @@ function ModifyModal(props) {
               </Col>
             </Form.Group>
 
-            <Form.Group as={Row} className="mb-3" controlId="formPlaintextPassword">
+            {/* font */}
+            <Form.Group as={Row} className="mb-3">
+
+              <Form.Label column sm="2">
+                font
+              </Form.Label>
+
+              <Col sm="10">
+                <Form.Select name="font" defaultValue={props.font}>
+                  <option>NanumMyeongjo</option>
+                  <option>NanumGothic</option>
+                </Form.Select>
+              </Col>
+
+            </Form.Group>
+
+            {/* 타이틀 */}
+            <Form.Group as={Row} className="mb-3">
+
               <Form.Label column sm="2">
                 title
               </Form.Label>
-              <Col sm="10">
-                <Form.Control defaultValue={props.title} />
-              </Col>
-            </Form.Group>
 
-            <Form.Group as={Row} controlId="formFileMultiple" className="mb-1">
-              <Form.Label column sm="2">image</Form.Label>
               <Col sm="10">
-                <Form.Control type="file" multiple />
+                <Form.Control defaultValue={props.title} name="title" />
               </Col>
+
+            </Form.Group>
+            
+            {/* 이미지 */}
+            <Form.Group as={Row} controlId="formFileMultiple" className="mb-1" id="fileform">
+
+              <Form.Label column sm="2">
+                image
+              </Form.Label>
+
+              <Col sm="10">
+                <Form.Control type="file" multiple id="upfile" name="filename" acceptCharset="UTF-8" onChange={() => {
+                  var files = document.getElementById('upfile').files;
+                  for (var i = 0; i < files.length; i++) {
+                    var hide = `<input type="hidden" name="filename" value="${files[i].name}" />`
+                    document.querySelector("#fileform").insertAdjacentHTML('beforeend', hide);
+                  }
+                }} />
+              </Col>
+
             </Form.Group>
 
           </Container>
         </Modal.Body>
 
         <Modal.Footer style={{ borderTop: 'none' }}>
-          <Button className="me-3" variant="outline-secondary" onClick={props.onHide} type="summit">작성</Button>
-        </Modal.Footer>
+          <Button className="me-3" variant="outline-secondary" type="submit" form="modify" onClick={()=>{
+            props.onHide();
+            // axios.post('http://localhost:8080/modify', {
+            //   data : {
+            //     id : props.id,
+            //     category : 1,
+            //     title : 1,
+            //     src : 1
+            //   }
+            // }).then((result)=>{
+            //   alert(result.data);
+            //   props.onHide();
+            //   // window.location.replace('/admin')             
+            // })
+            // .catch((error)=>{
+            //   alert(error);
+            // })
 
+          }}>작성</Button>
+        </Modal.Footer>
+        </Form>
       </Modal>
-    </Form>
+
   );
 }
 
 function DeleteModal(props) {
-  let navigate = useNavigate();
   return (
     <Modal
       {...props}
@@ -274,7 +325,7 @@ function DeleteModal(props) {
 
         <Modal.Footer style={{ borderTop: 'none' }}>
           <Button className="me-3" variant="outline-danger" onClick={()=>{
-            axios.delete('http://localhost:8080/test', {
+            axios.delete('http://localhost:8080/delete', {
               data : {
                 id : props.id
               }

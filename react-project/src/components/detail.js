@@ -72,21 +72,6 @@ function Detail(props) {
               })
           : null
         }
-        {/* {
-          props.postData !== undefined && props.postData != null && props.postData !== 'undefined'
-            ? typeof(props.postData.find(function (x) { return x._id === id }).src) == 'string'
-              ? <div className='imgbox'>
-                <img src={`http://localhost:8080/image/${props.postData.find(function (x) { return x._id === id }).src}`} alt={id} />
-                </div>
-              : props.postData.find(function (x) { return x._id === id }).src.map((item, i) => {
-                  return (
-                    <div className='imgbox' key={i}>
-                      <img src={`http://localhost:8080/image/${item}`} alt={id} />
-                    </div>
-                  )
-                })
-            : null
-        } */}
       </Slider>
       {/* 하단 fixed title, arrow box */}
       <Container fluid>

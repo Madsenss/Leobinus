@@ -1,7 +1,7 @@
 import './App.css';
 
 import { useEffect, useState } from 'react';
-import { Routes, Route, Navigate, useNavigate } from 'react-router-dom'
+import { Routes, Route } from 'react-router-dom'
 
 import axios from 'axios'
 
