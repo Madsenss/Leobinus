@@ -18,9 +18,10 @@ function MainNav(props) {
               className="d-inline-block align-top ms-2"
               alt="logo"
               onClick={()=>{navigate('/')}}
+              style={{cursor : 'pointer'}}
             />
 
-            <Navbar.Brand onClick={()=>{navigate('/')}} className="" id="brand-logo">
+            <Navbar.Brand onClick={()=>{navigate('/')}} style={{cursor : 'pointer'}} id="brand-logo">
               Leobinus
             </Navbar.Brand>
 

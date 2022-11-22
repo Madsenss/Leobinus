@@ -8,9 +8,10 @@ import axios from 'axios'
 import MainNav from './components/nav.js';
 import Posts from './components/posts.js';
 import Detail from './components/detail.js';
-import AdminTab from './components/adminTab';
-import AdminNav from './components/adminNav';
-import Login from './components/login';
+import AdminTab from './components/adminTab.js';
+import AdminNav from './components/adminNav.js';
+import Login from './components/login.js';
+import About from './components/about.js';
 
 function App() {
   let [categorys, setCategorys] = useState();
@@ -40,7 +41,7 @@ function App() {
         <Route path="/" element={<><MainNav categorys={categorys} /><Posts categorys={categorys} postData={postData} /></>} />
         <Route path="*" element={<div>잘못된 요청입니다.</div>} />
 
-        <Route path="/about" element={<><MainNav categorys={categorys} /><div>about</div></>} />
+        <Route path="/about" element={<><MainNav categorys={categorys} /><About /></>} />
 
         <Route path="/all" element={<><MainNav categorys={categorys} /><Posts categorys={categorys} postData={postData} /></>} />
         <Route path="/editorial" element={<><MainNav categorys={categorys} /><Posts categorys={categorys} postData={postData} /></>} />

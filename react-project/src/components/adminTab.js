@@ -50,8 +50,8 @@ function AdminTab(props) {
                             : <td><img src={`http://localhost:8080/image/${item.src[0]}`} className="preview" onClick={() => { navigate(`/detail/${item._id}`) }} alt="preview" /></td>
                         }
                         <td>
-                          <ChangeCircleIcon style={{ fontSize: '3vh' }} onClick={() => { setModifyShow(true); setTitle(item.title); setId(item._id); setFont(item.font); setMCategory(item.category); }} />
-                          <RemoveCircleIcon style={{ fontSize: '3vh' }} onClick={() => { setDeleteShow(true); setTitle(item.title); setId(item._id) }} />
+                          <ChangeCircleIcon style={{ fontSize: '3vh', cursor : 'pointer' }} onClick={() => { setModifyShow(true); setTitle(item.title); setId(item._id); setFont(item.font); setMCategory(item.category); }} />
+                          <RemoveCircleIcon style={{ fontSize: '3vh', cursor : 'pointer' }} onClick={() => { setDeleteShow(true); setTitle(item.title); setId(item._id) }} />
                         </td>
                       </tr>
                     )
@@ -91,8 +91,8 @@ function AdminTab(props) {
                                     : <td><img src={`http://localhost:8080/image/${item.src[0]}`} className="preview" onClick={() => { navigate(`/detail/${item._id}`) }} alt="preview" /></td>
                                 }
                                 <td>
-                                  <ChangeCircleIcon style={{ fontSize: '3vh' }} onClick={() => { setModifyShow(true); setTitle(item.title); setId(item._id); setFont(item.font); setMCategory(item.category); }} />
-                                  <RemoveCircleIcon style={{ fontSize: '3vh' }} onClick={() => { setDeleteShow(true); setTitle(item.title); setId(item._id) }} />
+                                  <ChangeCircleIcon style={{ fontSize: '3vh', cursor : 'pointer' }} onClick={() => { setModifyShow(true); setTitle(item.title); setId(item._id); setFont(item.font); setMCategory(item.category); }} />
+                                  <RemoveCircleIcon style={{ fontSize: '3vh', cursor : 'pointer' }} onClick={() => { setDeleteShow(true); setTitle(item.title); setId(item._id) }} />
                                 </td>
                               </tr>
                             )

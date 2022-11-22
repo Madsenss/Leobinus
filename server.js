@@ -259,7 +259,7 @@ app.post('/modify', upload2.array('filename', 20), (req, res) => {
       var imageData = result.src;
 
       var setFileName= req.body.filename;
-      
+
       if(typeof setFileName == 'object'){
         for( let i=0; i<setFileName.length; i++){
           setFileName[i] = now + setFileName[i]
@@ -303,6 +303,20 @@ app.post('/modify', upload2.array('filename', 20), (req, res) => {
 })
 
 
+// 탭 추가
+
+// 탭 삭제
+
+// 탭 순서 변경 (네비바 컴포넌트에도 적용해야함) https://dev.to/madanlal/how-to-sort-array-of-object-using-object-keys-in-javascript-58f1
+var a = [{b : 3}, {b : 1}, {b : 2}];
+console.log(a);
+var sort;
+sort = a.sort((c,d)=>{
+  return c.b - d.b;
+})
+console.log(sort);
+
+
 // react build 후 페이지
 app.use(express.static(path.join(__dirname, 'react-project/build')));
 app.get('/', (req, res) => {
@@ -311,3 +325,5 @@ app.get('/', (req, res) => {
 app.get('*', function (req, res) {
   res.sendFile(path.join(__dirname, '/react-project/build/index.html'));
 });
+
+

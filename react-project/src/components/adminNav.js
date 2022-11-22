@@ -17,13 +17,13 @@ function AdminNav(props) {
 
       <Container>
         
-        <Navbar.Brand onClick={() => { navigate('/admin') }}>
+        <Navbar.Brand style={{cursor : 'pointer'}} onClick={() => { navigate('/admin') }}>
           <img
             src="http://localhost:8080/image/logo.jpg"
             width="30"
             height="30"
             className="d-inline-block align-top"
-            alt="React Bootstrap logo"
+            alt="logo"
           />
           Leobinus
         </Navbar.Brand>
