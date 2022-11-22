@@ -51,6 +51,11 @@ app.get('/upload', function (req, res) {
   res.render('upload.ejs')
 });
 
+var today = new Date();
+// var now = today.getFullYear().toString().substring(2, 4) + (today.getMonth() + 1) + today.getDate()
+//   + today.getHours() + today.getMinutes() + today.getSeconds();
+var now = today.getTime().toString();
+
 // 이미지 수신, 저장
 let multer = require('multer');
 var storage = multer.diskStorage({
@@ -58,14 +63,28 @@ var storage = multer.diskStorage({
     cb(null, './public/image')
   },
   filename: function (req, file, cb) {
-    cb(null, file.originalname = Buffer.from(file.originalname, 'latin1').toString('utf8'))
+    cb(null, now + (file.originalname = Buffer.from(file.originalname, 'latin1').toString('utf8')))
   }
 });
 
 var upload = multer({
   storage: storage,
   fileFilter: (req, file, callback) => {
-    var ext = path.extname(file.originalname);
+    var ext = path.extname(now + file.originalname);
+    if (ext !== '.png' && ext !== '.jpg' && ext !== '.jpeg' && ext !== '.PNG' && ext !== '.JPG' && ext !== '.JPEG') {
+      return callback(new Error('PNG, JPG, JPEG만 업로드하세요'))
+    }
+    callback(null, true)
+  },
+  limits: {
+    fileSize: 1024 * 1024 * 50
+  }
+});
+
+var upload2 = multer({
+  storage: storage,
+  fileFilter: (req, file, callback) => {
+    var ext = path.extname(now + file.originalname);
     if (ext !== '.png' && ext !== '.jpg' && ext !== '.jpeg' && ext !== '.PNG' && ext !== '.JPG' && ext !== '.JPEG') {
       return callback(new Error('PNG, JPG, JPEG만 업로드하세요'))
     }
@@ -152,8 +171,15 @@ app.post('/upload', upload.array('filename', 20), (req, res) => {
 
     db.collection('counter').findOne({ name: 'total' }, (error, result) => {
       var totalResult = result.totalPost;
-
-      db.collection('post').insertOne({ _id: (totalResult + 1), category: req.body.category, font: req.body.font, title: req.body.title, src: req.body.filename }, function () {
+      var setFileName= req.body.filename;
+      if(typeof setFileName == 'object'){
+        for( let i=0; i<setFileName.length; i++){
+          setFileName[i] = now + setFileName[i]
+        }
+      } else {
+        setFileName = now + setFileName;
+      }
+      db.collection('post').insertOne({ _id: (totalResult + 1), category: req.body.category, font: req.body.font, title: req.body.title, src: setFileName }, function () {
 
         db.collection('counter').updateOne({ name: 'total' }, { $inc: { totalPost: 1 } }, (error, result) => {
           if (error) { return console.log(error) }
@@ -170,9 +196,8 @@ app.post('/upload', upload.array('filename', 20), (req, res) => {
 // 게시물 삭제요청
 app.delete('/delete', (req, res) => {
 
-  console.log(req.body)
-
   req.body.id = parseInt(req.body.id);
+
   db.collection('post').findOne({ _id: req.body.id }, (error, result) => {
     if (error) { return res.send(error) }
 
@@ -207,7 +232,7 @@ app.delete('/delete', (req, res) => {
 })
 
 // 게시물 수정 요청
-app.post('/modify', upload.array('filename', 20), (req, res) => {
+app.post('/modify', upload2.array('filename', 20), (req, res) => {
 
   req.body.id = parseInt(req.body.id);
 
@@ -230,13 +255,24 @@ app.post('/modify', upload.array('filename', 20), (req, res) => {
     db.collection('post').findOne({ _id: req.body.id }, (error, result) => {
 
       if (error) { return res.send(error) }
+
       var imageData = result.src;
+
+      var setFileName= req.body.filename;
+      
+      if(typeof setFileName == 'object'){
+        for( let i=0; i<setFileName.length; i++){
+          setFileName[i] = now + setFileName[i]
+        }
+      } else {
+        setFileName = now + setFileName;
+      }
 
       if (typeof result.src == 'string') {
               
         try {     
           fs.unlinkSync(`./public/image/${imageData}`);
-          db.collection('post').updateOne({ _id: req.body.id }, { $set: { category: req.body.category, font: req.body.font, title: req.body.title, src: req.body.filename } }, (error, result) => {
+          db.collection('post').updateOne({ _id: req.body.id }, { $set: { category: req.body.category, font: req.body.font, title: req.body.title, src: setFileName } }, (error, result) => {
             if (error) { return res.send(error) };
             
             res.send(`<script type="text/javascript">alert("수정 완료"); history.go(-1);</script>`);
@@ -252,7 +288,7 @@ app.post('/modify', upload.array('filename', 20), (req, res) => {
           for (let i = 0; i < imageData.length; i++) {
             fs.unlinkSync(`./public/image/${imageData[i]}`);
           }
-          db.collection('post').updateOne({ _id: req.body.id }, { $set: { category: req.body.category, font: req.body.font, title: req.body.title, src: req.body.filename } }, (error, result) => {
+          db.collection('post').updateOne({ _id: req.body.id }, { $set: { category: req.body.category, font: req.body.font, title: req.body.title, src: setFileName } }, (error, result) => {
             if (error) { return res.send(error) };
             res.send(`<script type="text/javascript">alert("수정 완료"); history.go(-1);</script>`);
           })         
