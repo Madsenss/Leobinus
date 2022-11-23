@@ -44,10 +44,13 @@ function App() {
         <Route path="/about" element={<><MainNav categorys={categorys} /><About /></>} />
 
         <Route path="/all" element={<><MainNav categorys={categorys} /><Posts categorys={categorys} postData={postData} /></>} />
-        <Route path="/editorial" element={<><MainNav categorys={categorys} /><Posts categorys={categorys} postData={postData} /></>} />
-        <Route path="/commercial" element={<><MainNav categorys={categorys} /><Posts categorys={categorys} postData={postData} /></>} />
-        <Route path="/portrait" element={<><MainNav categorys={categorys} /><Posts categorys={categorys} postData={postData} /></>} />
-
+        {
+          categorys && categorys.map((item, i)=>{
+            return(
+              <Route path={`/${item.category}`} element={<><MainNav categorys={categorys} /><Posts categorys={categorys} postData={postData} /></>} />
+            )
+          })
+        }
         <Route path="/shop" element={<><MainNav categorys={categorys} /><div>shop</div></>} />
 
         <Route path="/detail/:id" element={<><MainNav categorys={categorys} /><Detail postData={postData} /></>} />

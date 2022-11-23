@@ -304,8 +304,25 @@ app.post('/modify', upload2.array('filename', 20), (req, res) => {
 
 
 // 탭 추가
-
+app.post('/addtab', (req, res)=>{
+  console.log(req.body.data.category);
+  db.collection('category').find().toArray((error, result)=>{
+    console.log(result.length);
+    db.collection('category').insertOne({ category : req.body.data.category, ordernum : result.length + 1}, (error, result)=>{
+      if(error) { return res.send(error) }
+      res.send('생성 완료');
+    })
+  })
+})
+console.log(now)
 // 탭 삭제
+app.delete('/deltab', (req, res)=>{
+  // db.collection('category').deleteOne({ category : req.body }, (error, result)=>{
+  //   if(error) {return res.send(error)}
+
+  // })
+  res.send('잠시 기둘, 코드개빡쎔');
+})
 
 // 탭 순서 변경 (네비바 컴포넌트에도 적용해야함) https://dev.to/madanlal/how-to-sort-array-of-object-using-object-keys-in-javascript-58f1
 var a = [{b : 3}, {b : 1}, {b : 2}];

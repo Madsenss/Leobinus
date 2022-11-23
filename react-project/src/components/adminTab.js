@@ -16,6 +16,15 @@ function AdminTab(props) {
   const [id, setId] = useState(0);
   const [font, setFont] = useState(0);
   const [key, setKey] = useState('all');
+  let [addTab, setAddTab] = useState('');
+  let [delTab, setDelTab] = useState('editorial');
+  let handleAddTab = (e) => {
+    setAddTab(e.target.value);
+  }
+
+  let handleDelTab = (e) => {
+    setDelTab(e.target.value);
+  }
   return (
 
     <Container>
@@ -50,8 +59,8 @@ function AdminTab(props) {
                             : <td><img src={`http://localhost:8080/image/${item.src[0]}`} className="preview" onClick={() => { navigate(`/detail/${item._id}`) }} alt="preview" /></td>
                         }
                         <td>
-                          <ChangeCircleIcon style={{ fontSize: '3vh', cursor : 'pointer' }} onClick={() => { setModifyShow(true); setTitle(item.title); setId(item._id); setFont(item.font); setMCategory(item.category); }} />
-                          <RemoveCircleIcon style={{ fontSize: '3vh', cursor : 'pointer' }} onClick={() => { setDeleteShow(true); setTitle(item.title); setId(item._id) }} />
+                          <ChangeCircleIcon style={{ fontSize: '3vh', cursor: 'pointer' }} onClick={() => { setModifyShow(true); setTitle(item.title); setId(item._id); setFont(item.font); setMCategory(item.category); }} />
+                          <RemoveCircleIcon style={{ fontSize: '3vh', cursor: 'pointer' }} onClick={() => { setDeleteShow(true); setTitle(item.title); setId(item._id) }} />
                         </td>
                       </tr>
                     )
@@ -91,8 +100,8 @@ function AdminTab(props) {
                                     : <td><img src={`http://localhost:8080/image/${item.src[0]}`} className="preview" onClick={() => { navigate(`/detail/${item._id}`) }} alt="preview" /></td>
                                 }
                                 <td>
-                                  <ChangeCircleIcon style={{ fontSize: '3vh', cursor : 'pointer' }} onClick={() => { setModifyShow(true); setTitle(item.title); setId(item._id); setFont(item.font); setMCategory(item.category); }} />
-                                  <RemoveCircleIcon style={{ fontSize: '3vh', cursor : 'pointer' }} onClick={() => { setDeleteShow(true); setTitle(item.title); setId(item._id) }} />
+                                  <ChangeCircleIcon style={{ fontSize: '3vh', cursor: 'pointer' }} onClick={() => { setModifyShow(true); setTitle(item.title); setId(item._id); setFont(item.font); setMCategory(item.category); }} />
+                                  <RemoveCircleIcon style={{ fontSize: '3vh', cursor: 'pointer' }} onClick={() => { setDeleteShow(true); setTitle(item.title); setId(item._id) }} />
                                 </td>
                               </tr>
                             )
@@ -115,10 +124,22 @@ function AdminTab(props) {
                 탭 생성
               </Form.Label>
               <Col sm="8">
-                <Form.Control type="text" />
+                <Form.Control type="text" onChange={handleAddTab} />
               </Col>
               <Col sm="4">
-                <Button variant="outline-secondary">생성</Button>
+                <Button variant="outline-secondary" onClick={() => {
+                  axios.post('http://localhost:8080/addtab', {
+                    data: {
+                      category: addTab
+                    }
+                  }).then((result) => {
+                    alert(result.data);
+                    window.location.replace('/admin')
+                  })
+                    .catch((error) => {
+                      alert(error);
+                    })
+                }}>생성</Button>
               </Col>
             </Form.Group>
 
@@ -127,7 +148,7 @@ function AdminTab(props) {
                 탭 삭제 ( 해당 탭의 <span style={{ fontWeight: 'bold', color: 'red' }}>모든 게시물이 삭제</span>됩니다 )
               </Form.Label>
               <Col sm="8">
-                <Form.Select>
+                <Form.Select onChange={handleDelTab} value={delTab}>
                   {
                     props.categorys !== undefined
                       ? props.categorys.map((item, i) => {
@@ -141,7 +162,18 @@ function AdminTab(props) {
                 </Form.Select>
               </Col>
               <Col sm="4">
-                <Button variant="outline-danger">삭제</Button>
+                <Button variant="outline-danger" onClick={() => {
+                  axios.delete('http://localhost:8080/deltab', {
+                    data: {
+                      category : delTab
+                    }
+                  }).then((result) => {
+                    alert(result.data);
+                    window.location.replace('/admin')
+                  }).catch((error) => {
+                    alert(error);
+                  })
+                }}>삭제</Button>
               </Col>
             </Form.Group>
             <Form.Group as={Row} className="mb-3">
@@ -178,7 +210,7 @@ function AdminTab(props) {
         </Tab>
       </Tabs>
 
-      <ModifyModal categorys={props.categorys} id={id} title={title} font={font} mcategory={mCategory}  show={modifyShow} onHide={() => setModifyShow(false)} />
+      <ModifyModal categorys={props.categorys} id={id} title={title} font={font} mcategory={mCategory} show={modifyShow} onHide={() => setModifyShow(false)} />
       <DeleteModal categorys={props.categorys} id={id} title={title} show={deleteShow} onHide={() => setDeleteShow(false)} />
 
     </Container>
@@ -188,13 +220,13 @@ function AdminTab(props) {
 
 function ModifyModal(props) {
   return (
-      <Modal
-        {...props}
-        size="md"
-        aria-labelledby="contained-modal-title-vcenter"
-        centered
-      >
-        <Form method="POST" action="http://localhost:8080/modify" encType="multipart/form-data" id="modify" acceptCharset="UTF-8">
+    <Modal
+      {...props}
+      size="md"
+      aria-labelledby="contained-modal-title-vcenter"
+      centered
+    >
+      <Form method="POST" action="http://localhost:8080/modify" encType="multipart/form-data" id="modify" acceptCharset="UTF-8">
         <Modal.Header style={{ borderBottom: 'none' }} closeButton />
 
         <Modal.Body>
@@ -249,7 +281,7 @@ function ModifyModal(props) {
               </Col>
 
             </Form.Group>
-            
+
             {/* 이미지 */}
             <Form.Group as={Row} controlId="formFileMultiple" className="mb-1" id="fileform">
 
@@ -273,28 +305,12 @@ function ModifyModal(props) {
         </Modal.Body>
 
         <Modal.Footer style={{ borderTop: 'none' }}>
-          <Button className="me-3" variant="outline-secondary" type="submit" form="modify" onClick={()=>{
+          <Button className="me-3" variant="outline-secondary" type="submit" form="modify" onClick={() => {
             props.onHide();
-            // axios.post('http://localhost:8080/modify', {
-            //   data : {
-            //     id : props.id,
-            //     category : 1,
-            //     title : 1,
-            //     src : 1
-            //   }
-            // }).then((result)=>{
-            //   alert(result.data);
-            //   props.onHide();
-            //   // window.location.replace('/admin')             
-            // })
-            // .catch((error)=>{
-            //   alert(error);
-            // })
-
           }}>작성</Button>
         </Modal.Footer>
-        </Form>
-      </Modal>
+      </Form>
+    </Modal>
 
   );
 }
@@ -324,17 +340,16 @@ function DeleteModal(props) {
         </Modal.Body>
 
         <Modal.Footer style={{ borderTop: 'none' }}>
-          <Button className="me-3" variant="outline-danger" onClick={()=>{
+          <Button className="me-3" variant="outline-danger" onClick={() => {
             axios.delete('http://localhost:8080/delete', {
-              data : {
-                id : props.id
+              data: {
+                id: props.id
               }
-            }).then((result)=>{
+            }).then((result) => {
               alert(result.data);
               props.onHide();
-              window.location.replace('/admin')             
-            })
-            .catch((error)=>{
+              window.location.replace('/admin')
+            }).catch((error) => {
               alert(error);
             })
           }}>삭제</Button>

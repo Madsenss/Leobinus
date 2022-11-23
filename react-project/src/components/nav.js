@@ -22,7 +22,7 @@ function MainNav(props) {
             />
 
             <Navbar.Brand onClick={()=>{navigate('/')}} style={{cursor : 'pointer'}} id="brand-logo">
-              Leobinus
+              studio uno
             </Navbar.Brand>
 
             <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-${expand}`} />
@@ -55,7 +55,7 @@ function MainNav(props) {
                       })
                     : null                  
                   }
-                  <Nav.Link onClick={()=>{navigate('/shop')}} id="fs">shop</Nav.Link>
+                  <Nav.Link onClick={()=>{alert('준비중입니다.')}} id="fs">shop</Nav.Link>
                 </Nav>
               </Offcanvas.Body>
 
