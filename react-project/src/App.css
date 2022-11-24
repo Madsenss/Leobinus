@@ -217,79 +217,74 @@ tbody>tr>td {
   display: block;
 }
 
+@media screen and (max-width: 576px) {
+  .contact-box {
+    margin: 0px 30px 0px 30px;
+  }
+}
+
 .main-bg {
-  background-image: url('http://localhost:8080/image/main2.jpg');
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
   width: 95%;
-  height: 90vh;
+  height: 100%;
   display: block;
   margin: auto;
-  text-align: center;
   margin-top: 30vh;
   margin-bottom: 30vh;
-
 }
 
-.service {
-  cursor: pointer;
-  text-align: center;
-  margin: 50px 30px 50px 30px;
-  /* padding: 50px 0px 50px 0px */
-}
-
-.service-items > h4 {
-  font-weight: bold;
-  font-size: 30px;
-}
-
-.service-items > a {
-  text-decoration: none;
-  color: black;
-  font-weight: bold;
-  font-size: 18px;
-}
-
-.service-items > p {
-  font-weight: bold;
-  font-size: 18px;
-}
-
-#service-icon {
-  /* background-color: white; */
-  color: black;
-  width: 50px;
-  height: 50px;
-  /* border-radius: 50%; */
-  box-sizing: border-box;
-  /* padding: 15px; */
+.about-logo {
+  width: 170px;
+  height: 170px;
+  display: block;
+  margin: auto;
 }
 
 .message-box {
-  margin: 5px 30px 30px 30px;
+  display: block;
+  margin: auto;
   margin-bottom: 25vh;
   padding: 30px;
+  max-width: 800px;
 }
 
 .message-box > h1 {
   font-weight: bold;
   text-align: center;
-}
-
-.message-box > p {
-  /* line-height: 200%; */
+  margin-bottom: 20px;
 }
 
 .contact-box {
+  display: block;
+  margin: auto;
   border-radius: 2%;
-  margin: 50px 30px 30px 30px;
+  max-width: 800px;
   padding: 30px;
   box-shadow: 0.5px 0.5px 2px 1px rgb(206, 202, 202);
 }
 
 .contact-box > div > button {
   width: 150px;
-  /* float: right; */
   font-weight: bold;
+}
+
+.service {
+  max-width: 500px;
+  display: block;
+  margin: auto;
+  margin-top: 50px;
+  margin-bottom: 50px;
+}
+
+.service-items {
+  text-align: center;
+  width: 33.33%;
+  float: left;
+}
+#service-icon {
+  cursor: pointer;
+  width: 50px;
+  height: 50px;
 }
