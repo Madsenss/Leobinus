@@ -36,7 +36,7 @@ function AdminTab(props) {
       >
         {/* all tab */}
         <Tab eventKey="all" title="all">
-          <Table>
+          <Table responsive size="sm">
             <thead>
               <tr>
                 <th>Category</th>
@@ -77,7 +77,7 @@ function AdminTab(props) {
             ? props.categorys.sort(props.categorys.ordernum).map((item, i) => {
               return (
                 <Tab eventKey={item.category} title={item.category} key={i}>
-                  <Table size="sm" className="mt-5">
+                  <Table responsive size="sm">
                     <thead>
                       <tr>
                         <th>Category</th>

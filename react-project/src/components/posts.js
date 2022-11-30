@@ -32,15 +32,15 @@ function Posts(props) {
               ? props.postData.map((item, i) => {
                 return (
                   <div key={i}>
-                    <div className='wrap'>
+                    <div className="wrap">
                       {
                         typeof (item.src) == 'string'
                           ? <img src={`http://localhost:8080/image/${item.src}`} alt={i} onClick={() => { navigate(`/detail/${item._id}`) }} />
                           : <img src={`http://localhost:8080/image/${item.src[0]}`} alt={i} onClick={() => { navigate(`/detail/${item._id}`) }} />
                       }
-                      <div className='wrap-text'>
-                        <h3 style={{ fontFamily: item.font }}>{item.category}</h3>
-                        <h2 style={{ fontFamily: item.font }}>{item.title}</h2>
+                      <div className="wrap-text" onClick={() => { navigate(`/detail/${item._id}`) }}>
+                        <span style={{ fontFamily: item.font }}>{item.category}</span>
+                        <p style={{ fontFamily: item.font }}>{item.title}</p>
                       </div>
                     </div>
                   </div>
@@ -55,15 +55,15 @@ function Posts(props) {
               ? props.postData.map((item, i) => {
                 return (
                   <div key={i}>
-                    <div className='wrap'>
+                    <div className="wrap">
                       {
                         typeof (item.src) == 'string'
                           ? <img src={`http://localhost:8080/image/${item.src}`} alt={i} onClick={() => { navigate(`/detail/${item._id}`) }} />
                           : <img src={`http://localhost:8080/image/${item.src[0]}`} alt={i} onClick={() => { navigate(`/detail/${item._id}`) }} />
                       }
-                      <div className='wrap-text'>
-                        <h3 style={{ fontFamily: item.font }}>{item.category}</h3>
-                        <h2 style={{ fontFamily: item.font }}>{item.title}</h2>
+                      <div className="wrap-text" onClick={() => { navigate(`/detail/${item._id}`) }}>
+                        <span style={{ fontFamily: item.font }}>{item.category}</span>
+                        <p style={{ fontFamily: item.font }}>{item.title}</p>
                       </div>
                     </div>
                   </div>
@@ -82,15 +82,15 @@ function Posts(props) {
                 ? props.postData.filter(v=> v.category === item.substring(1).toString()).map((item, i)=>{
                     return(
                       <div key={i}>
-                      <div className='wrap'>
+                      <div className="wrap">
                         {
                           typeof(item.src) == 'string'
                           ? <img src={`http://localhost:8080/image/${item.src}`} alt={i} onClick={() => { navigate(`/detail/${item._id}`) }} />
                           : <img src={`http://localhost:8080/image/${item.src[0]}`} alt={i} onClick={() => { navigate(`/detail/${item._id}`) }} />
                         }
-                        <div className='wrap-text'>
-                          <h3 style={{ fontFamily: item.font }}>{item.category}</h3>
-                          <h2 style={{ fontFamily: item.font }}>{item.title}</h2>
+                        <div className="wrap-text" onClick={() => { navigate(`/detail/${item._id}`) }}>
+                          <span style={{ fontFamily: item.font }}>{item.category}</span>
+                          <p style={{ fontFamily: item.font }}>{item.title}</p>
                         </div>
                       </div>
                     </div>

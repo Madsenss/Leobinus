@@ -3,10 +3,10 @@
 {   
     margin: auto;
     width: 80%;
-    margin-bottom: 150px;
+    margin-top: 3rem;
     position: relative;
     display: block;
-
+    overflow: hidden;
     box-sizing: border-box;
     -webkit-user-select: none;
        -moz-user-select: none;
@@ -20,6 +20,7 @@
     -webkit-tap-highlight-color: transparent;
 }
 
+
 .imgbox img {
     max-height: 100%;
     max-width: 100%;
@@ -27,19 +28,14 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    /* width: auto;
-    height: auto;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    position: absolute; */
     object-fit: cover;
-    
 }
 .imgbox {
     height: 80vh;
     position: relative;
+}
+.imgbox:hover {
+    cursor: pointer;
 }
 
 

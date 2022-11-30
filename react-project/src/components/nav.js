@@ -12,13 +12,13 @@ function MainNav(props) {
         <Navbar key={expand} expand={expand}>
           <Container fluid>
             <img
-              src="http://localhost:8080/image/logo.jpg"
-              width="60px"
-              height="60px"
+              src="http://localhost:8080/image/logop.png"
+              width="30px"
+              height="30px"
               className="d-inline-block align-top ms-2"
               alt="logo"
               onClick={()=>{navigate('/')}}
-              style={{cursor : 'pointer'}}
+              style={{cursor : 'pointer', marginRight :'10px'}}
             />
 
             <Navbar.Brand onClick={()=>{navigate('/')}} style={{cursor : 'pointer'}} id="brand-logo">
