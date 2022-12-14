@@ -76,8 +76,7 @@ function About() {
 
         <div className="contact-box">
           <Container fluid className="gx-0">
-            {/* <Form ref={form} onSubmit={sendEmail}> */}
-            <Form>
+            <Form ref={form} onSubmit={sendEmail}>
               <Form.Group>
                 <Form.Label style={{ fontWeight: 'bold' }}>Name</Form.Label>
                 <Form.Control type="text" placeholder="name" className="mb-3" name="name" onChange={inputName}/>
