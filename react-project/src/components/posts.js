@@ -12,7 +12,7 @@ function Posts(props) {
   let navigate = useNavigate();
   let pathName = window.location.pathname;
   let [path] = useState([]);
-  if (props.categorys !== undefined) {
+  if (props.categorys && props.categorys) {
     for (let i = 0; i < props.categorys.length; i++) {
       path.push("/" + props.categorys[i].category);
     }
@@ -28,79 +28,70 @@ function Posts(props) {
       >
         {
           pathName === "/"
-            ? props.postData !== undefined
-              ? props.postData.map((item, i) => {
-                return (
-                  <div key={i}>
-                    <div className="wrap">
-                      {
-                        typeof (item.src) == 'string'
-                          ? <img src={`http://localhost:8080/image/${item.src}`} alt={i} onClick={() => { navigate(`/detail/${item._id}`) }} />
-                          : <img src={`http://localhost:8080/image/${item.src[0]}`} alt={i} onClick={() => { navigate(`/detail/${item._id}`) }} />
-                      }
-                      <div className="wrap-text" onClick={() => { navigate(`/detail/${item._id}`) }}>
-                        <span style={{ fontFamily: item.font }}>{item.category}</span>
-                        <p style={{ fontFamily: item.font }}>{item.title}</p>
-                      </div>
-                    </div>
-                  </div>
-                )
-              })
-              : null
-            : null
-        }
-        {
-          pathName === "/all"
-            ? props.postData !== undefined
-              ? props.postData.map((item, i) => {
-                return (
-                  <div key={i}>
-                    <div className="wrap">
-                      {
-                        typeof (item.src) == 'string'
-                          ? <img src={`http://localhost:8080/image/${item.src}`} alt={i} onClick={() => { navigate(`/detail/${item._id}`) }} />
-                          : <img src={`http://localhost:8080/image/${item.src[0]}`} alt={i} onClick={() => { navigate(`/detail/${item._id}`) }} />
-                      }
-                      <div className="wrap-text" onClick={() => { navigate(`/detail/${item._id}`) }}>
-                        <span style={{ fontFamily: item.font }}>{item.category}</span>
-                        <p style={{ fontFamily: item.font }}>{item.title}</p>
-                      </div>
-                    </div>
-                  </div>
-                )
-              })
-              : null
-            : null
-        }
-
-        {
-          newPath !== undefined
-          ? newPath && newPath.map((item)=>{
+          ? props.postData && props.postData.map((item, i)=>{
             return(
-              pathName === item
-              ? props.postData !== undefined
-                ? props.postData.filter(v=> v.category === item.substring(1).toString()).map((item, i)=>{
-                    return(
-                      <div key={i}>
-                      <div className="wrap">
-                        {
-                          typeof(item.src) == 'string'
-                          ? <img src={`http://localhost:8080/image/${item.src}`} alt={i} onClick={() => { navigate(`/detail/${item._id}`) }} />
-                          : <img src={`http://localhost:8080/image/${item.src[0]}`} alt={i} onClick={() => { navigate(`/detail/${item._id}`) }} />
-                        }
-                        <div className="wrap-text" onClick={() => { navigate(`/detail/${item._id}`) }}>
-                          <span style={{ fontFamily: item.font }}>{item.category}</span>
-                          <p style={{ fontFamily: item.font }}>{item.title}</p>
-                        </div>
-                      </div>
-                    </div>
-                    )
-                  })
-                : null
-              : null
+              <div key={i}>
+                <div className="wrap">
+                {
+                  typeof (item.src) == 'string'
+                  ? <img src={`/image/${item.src}`} alt={i} onClick={() => { navigate(`/detail/${item._id}`) }} />
+                  : <img src={`/image/${item.src[0]}`} alt={i} onClick={() => { navigate(`/detail/${item._id}`) }} />
+                }
+                  <div className="wrap-text" onClick={() => { navigate(`/detail/${item._id}`) }}>
+                    <span style={{ fontFamily: item.font }}>{item.category}</span>
+                    <p style={{ fontFamily: item.font }}>{item.title}</p>
+                  </div>
+                </div>
+              </div>
             )
           })
           : null
+        }
+        {
+          pathName === "/all"
+          ? props.postData && props.postData.map((item, i)=>{
+            return(
+              <div key={i}>
+                <div className="wrap">
+                  {
+                    typeof (item.src) == 'string'
+                    ? <img src={`/image/${item.src}`} alt={i} onClick={() => { navigate(`/detail/${item._id}`) }} />
+                    : <img src={`/image/${item.src[0]}`} alt={i} onClick={() => { navigate(`/detail/${item._id}`) }} />
+                  }
+                <div className="wrap-text" onClick={() => { navigate(`/detail/${item._id}`) }}>
+                  <span style={{ fontFamily: item.font }}>{item.category}</span>
+                  <p style={{ fontFamily: item.font }}>{item.title}</p>
+                </div>
+                </div>
+              </div>
+            )
+          })
+          : null
+        }
+        {
+          newPath && newPath.map((item, i)=>{
+            return (
+              pathName === item
+              ? props.postData && props.postData.filter(v=> v.category === item.substring(1).toString()).map((item, i)=>{
+                return (
+                  <div key={i}>
+                    <div className="wrap">
+                      {
+                        typeof(item.src) == 'string'
+                        ? <img src={`/image/${item.src}`} alt={i} onClick={() => { navigate(`/detail/${item._id}`) }} />
+                        : <img src={`/image/${item.src[0]}`} alt={i} onClick={() => { navigate(`/detail/${item._id}`) }} />
+                      }
+                      <div className="wrap-text" onClick={() => { navigate(`/detail/${item._id}`) }}>
+                        <span style={{ fontFamily: item.font }}>{item.category}</span>
+                        <p style={{ fontFamily: item.font }}>{item.title}</p>
+                      </div>
+                    </div>
+                  </div>
+                )
+              })
+              : null
+            )
+          })
         }
       </Masonry >
     </>

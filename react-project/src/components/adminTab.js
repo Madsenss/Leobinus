@@ -9,15 +9,26 @@ import axios from 'axios';
 
 function AdminTab(props) {
   let navigate = useNavigate();
+
   const [modifyShow, setModifyShow] = useState(false);
   const [deleteShow, setDeleteShow] = useState(false);
+  const [deleteTabShow, setDeleteTabShow] = useState(false);
+
   const [title, setTitle] = useState(0);
   const [mCategory, setMCategory] = useState(0);
   const [id, setId] = useState(0);
   const [font, setFont] = useState(0);
+
+
   const [key, setKey] = useState('all');
+
   let [addTab, setAddTab] = useState('');
   let [delTab, setDelTab] = useState('editorial');
+
+  props.categorys && props.categorys.sort((a, b)=>{
+    return a.ordernum - b.ordernum;
+  });
+
   let handleAddTab = (e) => {
     setAddTab(e.target.value);
   }
@@ -25,6 +36,7 @@ function AdminTab(props) {
   let handleDelTab = (e) => {
     setDelTab(e.target.value);
   }
+
   return (
 
     <Container>
@@ -55,8 +67,8 @@ function AdminTab(props) {
                         <td>{item.title}</td>
                         {
                           typeof (item.src) === 'string'
-                            ? <td><img src={`http://localhost:8080/image/${item.src}`} className="preview" onClick={() => { navigate(`/detail/${item._id}`) }} alt="preview" /></td>
-                            : <td><img src={`http://localhost:8080/image/${item.src[0]}`} className="preview" onClick={() => { navigate(`/detail/${item._id}`) }} alt="preview" /></td>
+                            ? <td><img src={`/image/${item.src}`} className="preview" onClick={() => { navigate(`/detail/${item._id}`) }} alt="preview" /></td>
+                            : <td><img src={`/image/${item.src[0]}`} className="preview" onClick={() => { navigate(`/detail/${item._id}`) }} alt="preview" /></td>
                         }
                         <td>
                           <ChangeCircleIcon style={{ fontSize: '3vh', cursor: 'pointer' }} onClick={() => { setModifyShow(true); setTitle(item.title); setId(item._id); setFont(item.font); setMCategory(item.category); }} />
@@ -73,8 +85,8 @@ function AdminTab(props) {
 
         {/* another tab */}
         {
-          props.categorys !== undefined
-            ? props.categorys.sort(props.categorys.ordernum).map((item, i) => {
+          props.categorys && props.categorys
+            ? props.categorys && props.categorys.map((item, i) => {
               return (
                 <Tab eventKey={item.category} title={item.category} key={i}>
                   <Table responsive size="sm">
@@ -88,16 +100,16 @@ function AdminTab(props) {
                     </thead>
                     <tbody>
                       {
-                        props.postData !== undefined
-                          ? props.postData.filter(v => v.category === item.category).map((item, i) => {
+                        props.postData && props.postData
+                          ? props.postData && props.postData.filter(v => v.category === item.category).map((item, i) => {
                             return (
                               <tr key={i}>
                                 <td>{item.category}</td>
                                 <td>{item.title}</td>
                                 {
                                   typeof (item.src) === 'string'
-                                    ? <td><img src={`http://localhost:8080/image/${item.src}`} className="preview" onClick={() => { navigate(`/detail/${item._id}`) }} alt="preview" /></td>
-                                    : <td><img src={`http://localhost:8080/image/${item.src[0]}`} className="preview" onClick={() => { navigate(`/detail/${item._id}`) }} alt="preview" /></td>
+                                    ? <td><img src={`/image/${item.src}`} className="preview" onClick={() => { navigate(`/detail/${item._id}`) }} alt="preview" /></td>
+                                    : <td><img src={`/image/${item.src[0]}`} className="preview" onClick={() => { navigate(`/detail/${item._id}`) }} alt="preview" /></td>
                                 }
                                 <td>
                                   <ChangeCircleIcon style={{ fontSize: '3vh', cursor: 'pointer' }} onClick={() => { setModifyShow(true); setTitle(item.title); setId(item._id); setFont(item.font); setMCategory(item.category); }} />
@@ -128,7 +140,7 @@ function AdminTab(props) {
               </Col>
               <Col sm="4">
                 <Button variant="outline-secondary" onClick={() => {
-                  axios.post('http://localhost:8080/addtab', {
+                  axios.post('/addtab', {
                     data: {
                       category: addTab
                     }
@@ -150,8 +162,8 @@ function AdminTab(props) {
               <Col sm="8">
                 <Form.Select onChange={handleDelTab} value={delTab}>
                   {
-                    props.categorys !== undefined
-                      ? props.categorys.map((item, i) => {
+                    props.categorys && props.categorys
+                      ? props.categorys && props.categorys.map((item, i) => {
                         return (
                           <option key={i} value={item.category}>{item.category}</option>
                         )
@@ -162,56 +174,56 @@ function AdminTab(props) {
                 </Form.Select>
               </Col>
               <Col sm="4">
-                <Button variant="outline-danger" onClick={() => {
-                  axios.delete('http://localhost:8080/deltab', {
-                    data: {
-                      category : delTab
-                    }
-                  }).then((result) => {
-                    alert(result.data);
-                    window.location.replace('/admin')
-                  }).catch((error) => {
-                    alert(error);
-                  })
-                }}>삭제</Button>
-              </Col>
-            </Form.Group>
-            <Form.Group as={Row} className="mb-3">
-              <Form.Label column sm="12">
-                탭 순서 변경 ( about - all - <span style={{ fontWeight: 'bold', color: 'red' }}>Switch</span> - shop )
-              </Form.Label>
-              {
-                props.categorys !== undefined
-                  ? props.categorys.sort(props.categorys.ordernum).map((item, i) => {
-                    return (
-                      <>
-                        <Form.Label column sm="3" key={i}>
-                          {item.category}
-                        </Form.Label>
-                        <Col sm="5">
-                          <Form.Control type="text" defaultValue={item.ordernum} />
-                        </Col>
-                        <Col sm="4">
-                        </Col>
-                      </>
-                    )
-                  })
-                  : null
-              }
-
-              <Col sm="8">
-              </Col>
-              <Col sm="4">
-                <Button variant="outline-secondary">변경</Button>
+                <Button variant="outline-danger" onClick={() => { setDeleteTabShow(true);}}>삭제</Button>
               </Col>
             </Form.Group>
 
+            <Form method="POST" id="motab" action="/motab">     
+              <Form.Group as={Row} className="mb-3">
+                <Form.Label column sm="12">
+                  탭 순서 변경 ( about - all - <span style={{ fontWeight: 'bold', color: 'red' }}>Switch</span> - shop )
+                </Form.Label>
+                {
+                  props.categorys && props.categorys
+                    ?  props.categorys && props.categorys.map((item, i) => {
+                      return (
+                        <>
+                          <Form.Label column sm="3" key={i}>
+                            {item.category}
+                          </Form.Label>
+                          <Col sm="5">
+                            <Form.Select defaultValue={parseInt(item.ordernum)} name={item.category}>
+                              {
+                                props.categorys && props.categorys.map((item, i)=>{
+                                  return (
+                                    <option key={i}>{parseInt(item.ordernum)}</option>
+                                  )
+                                })
+                              }
+                            </Form.Select>
+                          </Col>
+                          <Col sm="4">
+                          </Col>
+                        </>
+                      )
+                    })
+                    : null
+                }
+
+                <Col sm="8">
+                </Col>
+                <Col sm="4">
+                  <Button variant="outline-secondary" type="submit" form="motab">변경</Button>
+                </Col>
+              </Form.Group>
+            </Form>      
           </div>
         </Tab>
       </Tabs>
 
       <ModifyModal categorys={props.categorys} id={id} title={title} font={font} mcategory={mCategory} show={modifyShow} onHide={() => setModifyShow(false)} />
       <DeleteModal categorys={props.categorys} id={id} title={title} show={deleteShow} onHide={() => setDeleteShow(false)} />
+      <DeleteTab delTab={delTab} show={deleteTabShow} onHide={() => setDeleteTabShow(false)} />
 
     </Container>
 
@@ -226,7 +238,7 @@ function ModifyModal(props) {
       aria-labelledby="contained-modal-title-vcenter"
       centered
     >
-      <Form method="POST" action="http://localhost:8080/modify" encType="multipart/form-data" id="modify" acceptCharset="UTF-8">
+      <Form method="POST" action="/modify" encType="multipart/form-data" id="modify" acceptCharset="UTF-8">
         <Modal.Header style={{ borderBottom: 'none' }} closeButton />
 
         <Modal.Body>
@@ -241,8 +253,8 @@ function ModifyModal(props) {
                 {/* <Form.Select value={datas[props.title].category}> */}
                 <Form.Select defaultValue={props.mcategory} name="category">
                   {
-                    props.categorys != null
-                      ? props.categorys.map((item, i) => {
+                    props.categorys && props.categorys
+                      ? props.categorys && props.categorys.map((item, i) => {
                         return (
                           <option key={i}>{item.category}</option>
                         )
@@ -341,9 +353,61 @@ function DeleteModal(props) {
 
         <Modal.Footer style={{ borderTop: 'none' }}>
           <Button className="me-3" variant="outline-danger" onClick={() => {
-            axios.delete('http://localhost:8080/delete', {
+            axios.delete('/delete', {
               data: {
                 id: props.id
+              }
+            }).then((result) => {
+              alert(result.data);
+              props.onHide();
+              window.location.replace('/admin')
+            }).catch((error) => {
+              alert(error);
+            })
+          }}>삭제</Button>
+        </Modal.Footer>
+      </Form>
+    </Modal>
+
+  );
+}
+
+function DeleteTab(props) {
+  const [password, setPassword] = useState();
+
+  let inputPassword = (e) => {
+    setPassword(e.target.value);
+  }
+
+  return (
+    <Modal
+      {...props}
+      size="md"
+      aria-labelledby="contained-modal-title-vcenter"
+      centered
+    >
+      <Form action=''>
+        <Modal.Header style={{ borderBottom: 'none' }} closeButton />
+
+        <Modal.Body>
+          <Container>
+            <Form.Group as={Row}>
+              <Form.Label column sm="2">
+                Password
+              </Form.Label>
+              <Col sm="10">
+                <Form.Control onChange={inputPassword}/>
+              </Col>
+            </Form.Group>
+          </Container>
+        </Modal.Body>
+
+        <Modal.Footer style={{ borderTop: 'none' }}>
+          <Button className="me-3" variant="outline-danger" onClick={() => {
+            axios.delete('/deltab', {
+              data: {
+                password : password,
+                category: props.delTab
               }
             }).then((result) => {
               alert(result.data);

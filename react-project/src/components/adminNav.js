@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom'
 
-import { Navbar, Nav, Container, Modal, Button, Form, Row, Col } from 'react-bootstrap';
+import { Navbar, Nav, Container, Modal, Button, Form, Row, Col, Badge } from 'react-bootstrap';
 
 import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
 import ListAltIcon from '@mui/icons-material/ListAlt';
@@ -19,7 +19,7 @@ function AdminNav(props) {
         
         <Navbar.Brand style={{cursor : 'pointer'}} onClick={() => { navigate('/admin') }}>
           <img
-            src="http://localhost:8080/image/logo.jpg"
+            src="/image/logo.jpg"
             width="30"
             height="30"
             className="d-inline-block align-top"
@@ -30,17 +30,28 @@ function AdminNav(props) {
 
         <Nav className="me-auto">
           <Nav.Link onClick={() => { navigate('/posts') }}><ListAltIcon /></Nav.Link>
+
           <Nav.Link>
             <AddAPhotoIcon onClick={() => { setModalShow(true) }} />
           </Nav.Link>
-          <Nav.Link onClick={() => { navigate('/mail') }}><MailOutlineIcon /></Nav.Link>
+
+          <Nav.Link className="mailbadge" onClick={() => { navigate('/mail') }}><MailOutlineIcon />
+            {
+              props.mailData && props.mailData.length > 0
+              ? <Badge bg="danger">{props.mailData && props.mailData.length}</Badge>
+              : null
+            }       
+          </Nav.Link>
+
           <Nav.Link onClick={() => {             
-            axios.get('http://localhost:8080/logout').then(result =>{
+            axios.get('/logout').then(result =>{
               alert(result.data);
               navigate('/login');
             })
             .catch();
-          }}><LogoutIcon /></Nav.Link>
+          }}>
+            <LogoutIcon />
+          </Nav.Link>
         </Nav>
 
       </Container>
@@ -59,7 +70,7 @@ function WriteModal(props) {
       aria-labelledby="contained-modal-title-vcenter"
       centered
     >
-      <Form method="POST" action="http://localhost:8080/upload" encType="multipart/form-data" id="write" acceptCharset="UTF-8">
+      <Form method="POST" action="/upload" encType="multipart/form-data" id="write" acceptCharset="UTF-8">
         <Modal.Header style={{ borderBottom: 'none' }} closeButton />
 
         <Modal.Body>
@@ -75,7 +86,7 @@ function WriteModal(props) {
                 <Form.Select name="category">
                   {
                     props.categorys && props.categorys
-                      ? props.categorys.sort(props.categorys.ordernum).map((item, i) => {
+                      ? props.categorys && props.categorys.sort(props.categorys.ordernum).map((item, i) => {
                         return (
                           <option name={item.category} key={i} value={item.category}>{item.category}</option>
                         )

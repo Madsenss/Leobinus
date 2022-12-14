@@ -1,13 +1,13 @@
-import { Container, Row, Col } from 'react-bootstrap'
+import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from "react-router-dom";
+
+import { BsArrowLeft } from "react-icons/bs";
+import { Container, Row, Col } from 'react-bootstrap'
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import 'bootstrap/dist/css/bootstrap.min.css';
-
-import { BsChevronCompactLeft, BsChevronCompactRight, BsArrowLeft } from "react-icons/bs";
-import { useEffect, useState } from 'react';
 
 const settings = {
   dots: false,
@@ -18,12 +18,12 @@ const settings = {
   slidesToScroll: 1,
   nextArrow:(
     <div>
-      <img id="na" className="right-arrow" src="http://localhost:8080/image/right-arrow.png"/>
+      <img className="right-arrow" src="/image/right-arrow.png" alt="right"/>
     </div>
   ),
   prevArrow:(
     <div>
-      <img id="pa" className="left-arrow" src="http://localhost:8080/image/left-arrow.png"/>
+      <img className="left-arrow" src="/image/left-arrow.png" alt="left"/>
     </div>
   )
 };
@@ -37,31 +37,31 @@ function Detail(props) {
   const [title, setTitle] = useState();
 
   useEffect(()=>{
-    if( props.postData != null && props.postData != undefined){
-      setSrcType(typeof(props.postData.find( function(x) {return x._id == id} ).src));
+    if( props.postData !== null && props.postData !== undefined){
+      setSrcType(typeof(props.postData && props.postData.find( function(x) {return x._id == id} ).src));
     }
-    if( props.postData != null && props.postData != undefined){
-      setFind(props.postData.find( function(x) {return x._id == id} ).src);
+    if( props.postData !== null && props.postData !== undefined){
+      setFind(props.postData && props.postData.find( function(x) {return x._id == id} ).src);
     }
-    if( props.postData != null && props.postData != undefined){
-      setTitle(props.postData.find( function(x) {return x._id == id} ).title);
+    if( props.postData !== null && props.postData !== undefined){
+      setTitle(props.postData && props.postData.find( function(x) {return x._id == id} ).title);
     }
-  },[props.postData])
+  },[props])
 
   return (
     <>
       {/* image slider */}
       <Slider {...settings}>
         {
-          find == find && srcType == srcType
-          ? srcType == 'string'
+          (find && find) && (srcType && srcType)
+          ? srcType && srcType === 'string'
             ? <div className='imgbox'>
-                <img src={`http://localhost:8080/image/${find}`} alt={id} />
+                <img src={`/image/${find}`} alt={id} />
               </div>
             : find && find.map((item, i)=>{
                 return(
                   <div className='imgbox' key={i}>
-                    <img src={`http://localhost:8080/image/${item}`} alt={id} />
+                    <img src={`/image/${item}`} alt={id} />
                   </div>
                 )
               })

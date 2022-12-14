@@ -33,7 +33,7 @@ function Login() {
           </Form.Group>
           <Button variant="secondary" onClick={() => {
 
-            axios.post('http://localhost:8080/login', null, {
+            axios.post('/login', null, {
               params: {
                 'id': inputId,
                 'password': inputPw

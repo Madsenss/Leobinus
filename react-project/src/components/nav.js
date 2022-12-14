@@ -6,13 +6,17 @@ import { useNavigate } from 'react-router-dom'
 
 function MainNav(props) {
   let navigate = useNavigate();
+  let sortCategorys;
+  sortCategorys = props.categorys && props.categorys.sort((a, b)=>{
+    return a.ordernum - b.ordernum;
+  });
   return (
     <div>
       {['md'].map((expand) => (
         <Navbar key={expand} expand={expand}>
           <Container fluid>
             <img
-              src="http://localhost:8080/image/logop.png"
+              src="/image/logop.png"
               width="30px"
               height="30px"
               className="d-inline-block align-top ms-2"
@@ -35,7 +39,7 @@ function MainNav(props) {
 
               <Offcanvas.Header closeButton>
                 <Offcanvas.Title id={`offcanvasNavbarLabel-expand-${expand}`}>
-                  <img src="http://localhost:8080/image/logo.jpg" style={{ width: '100%' }}
+                  <img src="/image/logo.jpg" style={{ width: '100%' }}
                     className="d-inline-block align-top" alt="logo"
                   />
                 </Offcanvas.Title>
@@ -47,7 +51,7 @@ function MainNav(props) {
                   <Nav.Link onClick={()=>{navigate('/about')}} id="fs">about</Nav.Link>
                   <Nav.Link onClick={()=>{navigate('/all')}} id="fs">all</Nav.Link>
                   {
-                    props.categorys != null 
+                    props.categorys != undefined
                     ? props.categorys.sort(props.categorys.ordernum).map((item, i)=>{
                         return(
                           <Nav.Link key={i} onClick={()=>{navigate(`/${item.category}`)}} id="fs">{item.category}</Nav.Link>

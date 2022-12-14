@@ -1,18 +1,3 @@
-#brand-logo {
-  font-family: 'NanumMyeongjoExtraBold';
-  font-size: 30px;
-}
-
-
-#fs {
-  margin-left: 20px;
-  font-size: 18px;
-}
-
-.main-font {
-  font-family: 'NanumMyeongjoBold';
-}
-
 * {
   margin: 0px;
   padding: 0;
@@ -28,15 +13,26 @@ Link {
   text-decoration: none;
 }
 
-.body {
-  overflow: hidden;
-}
 body {
   margin: 0;
 }
-div {
-  box-sizing: border-box;
+
+
+
+/* NavBar */
+#brand-logo {
+  font-family: 'NanumMyeongjoExtraBold';
+  font-size: 30px;
 }
+
+#fs {
+  margin-left: 20px;
+  font-size: 16px;
+}
+
+
+
+/* Post */
 .my-masonry-grid {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -44,16 +40,13 @@ div {
   margin-left: 0px;
   margin-right: 10px;
   width: auto;
-  /* padding-top: 100px; */
 }
 
 .my-masonry-grid_column {
   padding-left: 10px;
-  /* gutter size */
   background-clip: padding-box;
 }
 
-/* Style your items */
 .my-masonry-grid_column>div {
   margin-bottom: 10px;
   cursor: pointer;
@@ -71,7 +64,6 @@ div {
   transform: scale(1.02);
   z-index: 50;
 }
-
 
 .wrap {
   position: relative;
@@ -98,17 +90,16 @@ div {
 }
 
 .wrap:hover span {
-  /* font-size: 1.3vw; */
   display: block;
   color: black;
 }
 
 .wrap:hover p {
-  /* font-size: 2.5vh; */
   font-weight: bold;
   display: block;
   color: black;
 }
+
 
 
 /* Detail */
@@ -123,26 +114,133 @@ div {
   display: flex;
   align-items: center;
 }
+
 .title > span {
-  font-size: 1.1vw;
+  font-size: 1.125rem;
   font-weight: bolder;
   margin-left: 1.5rem;
 }
 
 .back {
-  /* margin-right: 40px; */
   font-size: 3vh;
   text-align: right;
   color: rgb(126, 125, 125);
 }
+
 .ai {
-  margin-right: 1rem;
+  margin-right: 1.5rem;
 }
+
 .back:hover > .arrow {
   margin-right: 10px;
   transition: all 0.15s;
   color: black;
   font-weight: bold;
+}
+
+
+
+/* Admin Nav */
+.mailbadge {
+  position: relative;
+}
+
+.badge.bg-danger{
+  position: absolute; 
+  top: -2px;
+  right: -2px;
+  font-size: 8px;
+}
+
+
+/* Admin Nav -> Mail */
+.badge.hidenew {
+  width: 45px;
+  background : none !important;
+}
+
+.badge.bg-info {
+  width: 40px;
+}
+
+.sendname {
+  width: 100%;
+}
+
+.mailinfo {
+  font-weight : bold;
+  font-size : 15px;
+  width : 40px;
+  float : left;
+}
+
+.mailinfobdg {
+  font-weight : lighter !important;
+  font-size : 13px !important;
+}
+
+.iconbox {
+  float: right;
+}
+
+.mailicon {
+  cursor: pointer;
+  font-size: 25px !important;
+  margin-left: 20px;
+}
+
+.mailtime {
+  font-size: 13px;
+}
+
+.maildelete {
+  text-align: center;
+  font-size: 20px;;
+  margin-bottom: -10px;
+}
+
+@media screen and (max-width: 768px) {
+  .iconbox {
+    float: none;
+    display: flex;
+    justify-content: right;
+    margin-top: 20px;
+  }
+  .mailicon {
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+
+  .badge.bg-info {
+    font-size: 8px;
+  }
+  .badge.hidenew {
+    width: 39px;
+  }
+}
+
+@media screen and (max-width : 500px) {
+  .sendname {
+    font-size: 12px;
+  }
+  .mailinfo {
+    font-size : 13px;
+  }
+  .mailinfobdg {
+    font-size: 12px !important;
+  }
+  .mailtime {
+    font-size: 12px;
+  }
+  .mailicon {
+    font-size: 20px !important;
+  }
+  .mailmessage {
+    font-size: 14px;
+  }
+  .maildelete {
+    font-size: 16px;
+  }
 }
 
 
@@ -156,7 +254,6 @@ div {
   color: black;
 }
 
-
 thead>tr>th {
   text-align: center;
   font-size: 1rem;
@@ -167,6 +264,7 @@ tbody>tr>td {
   vertical-align: middle;
   font-size: 1rem;
 }
+
 .preview {
   width: 10vh;
   cursor: pointer;
@@ -176,6 +274,7 @@ tbody>tr>td {
   max-width: 500px;
   display: block;
 }
+
 
 
 
@@ -225,6 +324,8 @@ tbody>tr>td {
 }
 
 
+
+
 /* About */
 .main-bg {
   background-repeat: no-repeat;
@@ -267,22 +368,22 @@ tbody>tr>td {
   box-shadow: 0.5px 0.5px 2px 1px rgb(206, 202, 202);
 }
 
-.contact-box > div > button {
-  width: 150px;
+#aboutbutton {
+  width: 100px;
   font-weight: bold;
 }
 
 .service {
-  max-width: 500px;
+  max-width: 300px;
   display: block;
   margin: auto;
-  margin-top: 50px;
+  margin-top: 100px;
   margin-bottom: 50px;
 }
 
 .service-items {
   text-align: center;
-  width: 33.33%;
+  width: 50%;
   float: left;
 }
 #service-icon {
@@ -292,22 +393,6 @@ tbody>tr>td {
 }
 
 
-/* @media screen and (max-width: 700px) {
-  .wrap-text span {
-    font-size: 14px;
-  };
-  .wrap-text p {
-    font-size: 14px;
-  }; 1.25 1.5
-} */
-/* @media screen and (max-width: 1200px) {
-  .wrap-text > span {
-    font-size: 1rem;
-  }
-  .wrap-text > p {
-    font-size: 1.25rem;
-  }
-} */
 @media screen and (max-width: 800px) {
   .wrap-text > span {
     font-size: 1rem;
@@ -315,7 +400,28 @@ tbody>tr>td {
   .wrap-text > p {
     font-size: 1.25rem;
   }
+  .title > span {
+    font-size: 1rem;
+  }
+  .main-bg {
+    width: 90%;
+  }
+  .contact-box {
+    margin: 0px 30px 0px 30px;
+  }
 }
+
+@media screen and (max-width: 576px) {
+  .message-box {
+    margin-bottom: 0;
+  }
+  
+  .main-bg {
+    margin-top: 50px;
+    margin-bottom: 50px;
+  }
+}
+
 @media screen and (max-width: 500px) {
   .wrap-text > span {
     font-size: 0.75rem;
@@ -329,10 +435,5 @@ tbody>tr>td {
   
   tbody>tr>td {
     font-size: 0.5rem;
-  }
-}
-@media screen and (max-width: 576px) {
-  .contact-box {
-    margin: 0px 30px 0px 30px;
   }
 }

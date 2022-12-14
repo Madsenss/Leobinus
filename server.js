@@ -6,6 +6,7 @@ const fs = require("fs");
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const session = require('express-session');
+require('dotenv').config();
 
 app.use(express.urlencoded({ extended: true }))
 
@@ -28,6 +29,8 @@ MongoClient.connect('mongodb+srv://admin:narcisse97@cluster0.rwbri54.mongodb.net
   });
 });
 
+
+
 // DB 데이터 송신
 app.get('/categorys', (req, res) => {
   db.collection('category').find().toArray((error, result) => {
@@ -41,26 +44,25 @@ app.get('/postdata', (req, res) => {
   })
 })
 
+app.get('/maildata', (req, res) => {
+  db.collection('mail').find().toArray((error, result) => {
+    res.send(result).json;
+  })
+})
+
 app.get('/image/:imageName', (req, res) => {
-  res.sendFile(__dirname + '/public/image/' + req.params.imageName);
+  res.sendFile(__dirname + '/image/' + req.params.imageName);
 })
 
 
-// Test ejs page
-app.get('/upload', function (req, res) {
-  res.render('upload.ejs')
-});
-
-var today = new Date();
-// var now = today.getFullYear().toString().substring(2, 4) + (today.getMonth() + 1) + today.getDate()
-//   + today.getHours() + today.getMinutes() + today.getSeconds();
-var now = today.getTime().toString();
 
 // 이미지 수신, 저장
+var today = new Date();
+var now = today.getTime().toString();
 let multer = require('multer');
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, './public/image')
+    cb(null, './image')
   },
   filename: function (req, file, cb) {
     cb(null, now + (file.originalname = Buffer.from(file.originalname, 'latin1').toString('utf8')))
@@ -77,7 +79,7 @@ var upload = multer({
     callback(null, true)
   },
   limits: {
-    fileSize: 1024 * 1024 * 50
+    fileSize: 1024 * 1024 * 5000
   }
 });
 
@@ -91,7 +93,7 @@ var upload2 = multer({
     callback(null, true)
   },
   limits: {
-    fileSize: 1024 * 1024 * 50
+    fileSize: 1024 * 1024 * 5000
   }
 });
 
@@ -161,7 +163,7 @@ app.get('/logout', function (req, res, next) {
 
 
 // 게시물 작성 요청
-app.post('/upload', upload.array('filename', 20), (req, res) => {
+app.post('/upload', upload.array('filename', 50), (req, res) => {
 
   if (req.body.title == (null || "")) {
     return res.send(`<script type="text/javascript">alert("타이틀 내용이 없습니다"); history.go(-1);</script>`);;
@@ -204,7 +206,7 @@ app.delete('/delete', (req, res) => {
     if (typeof result.src == 'string') {
       var imageData = result.src;
       try {
-        fs.unlinkSync(`./public/image/${imageData}`);
+        fs.unlinkSync(`./image/${imageData}`);
         db.collection('post').deleteOne({ _id: req.body.id }, (error, result) => {
         })
         res.send('삭제완료');
@@ -217,7 +219,7 @@ app.delete('/delete', (req, res) => {
       var imageData = result.src;
       try {
         for (let i = 0; i < imageData.length; i++) {
-          fs.unlinkSync(`./public/image/${imageData[i]}`);
+          fs.unlinkSync(`./image/${imageData[i]}`);
         }
         db.collection('post').deleteOne({ _id: req.body.id }, (error, result) => {
           if (error) { return res.send(error) };
@@ -271,7 +273,7 @@ app.post('/modify', upload2.array('filename', 20), (req, res) => {
       if (typeof result.src == 'string') {
               
         try {     
-          fs.unlinkSync(`./public/image/${imageData}`);
+          fs.unlinkSync(`./image/${imageData}`);
           db.collection('post').updateOne({ _id: req.body.id }, { $set: { category: req.body.category, font: req.body.font, title: req.body.title, src: setFileName } }, (error, result) => {
             if (error) { return res.send(error) };
             
@@ -286,7 +288,7 @@ app.post('/modify', upload2.array('filename', 20), (req, res) => {
 
         try {
           for (let i = 0; i < imageData.length; i++) {
-            fs.unlinkSync(`./public/image/${imageData[i]}`);
+            fs.unlinkSync(`./image/${imageData[i]}`);
           }
           db.collection('post').updateOne({ _id: req.body.id }, { $set: { category: req.body.category, font: req.body.font, title: req.body.title, src: setFileName } }, (error, result) => {
             if (error) { return res.send(error) };
@@ -305,34 +307,97 @@ app.post('/modify', upload2.array('filename', 20), (req, res) => {
 
 // 탭 추가
 app.post('/addtab', (req, res)=>{
-  console.log(req.body.data.category);
   db.collection('category').find().toArray((error, result)=>{
-    console.log(result.length);
     db.collection('category').insertOne({ category : req.body.data.category, ordernum : result.length + 1}, (error, result)=>{
       if(error) { return res.send(error) }
       res.send('생성 완료');
     })
   })
 })
-console.log(now)
+
+
 // 탭 삭제
+var allsrc = [];
 app.delete('/deltab', (req, res)=>{
-  // db.collection('category').deleteOne({ category : req.body }, (error, result)=>{
-  //   if(error) {return res.send(error)}
+  db.collection('login').find().toArray((error, result)=>{
+    if(req.body.password == result[0].pw){
+      
+      db.collection('post').find({category : req.body.category}).toArray((error, result)=>{
 
-  // })
-  res.send('잠시 기둘, 코드개빡쎔');
+        if(result.length === 0){
+    
+          db.collection('category').deleteOne({category : req.body.category},(error, result)=>{
+            if(error) { return res.send(error) }
+            return res.send('카테고리가 삭제되었습니다.');
+          })
+    
+        } else {
+    
+          for(let i=0; i<result.length; i++){
+            if(typeof result[i].src === 'string'){
+              allsrc.push(result[i].src);
+            } else if(typeof result[i].src ==='object'){
+              allsrc.push(...result[i].src);
+            }
+          }
+    
+          for(let i=0; i<allsrc.length; i++){
+            fs.unlinkSync(`./image/${allsrc[i]}`);
+          }
+    
+          db.collection('post').deleteMany({category : req.body.category},(error, result)=>{
+            if(error) { return res.send(error) }
+            console.log('good');
+          })
+    
+          db.collection('category').deleteOne({category : req.body.category},(error, result)=>{
+            if(error) { return res.send(error) }
+            return res.send('카테고리가 삭제되었습니다.');
+          })
+    
+        }
+      })
+
+    } else {
+      res.send('비밀번호가 일치하지 않습니다.');
+    }
+  })
+
 })
 
-// 탭 순서 변경 (네비바 컴포넌트에도 적용해야함) https://dev.to/madanlal/how-to-sort-array-of-object-using-object-keys-in-javascript-58f1
-var a = [{b : 3}, {b : 1}, {b : 2}];
-console.log(a);
-var sort;
-sort = a.sort((c,d)=>{
-  return c.b - d.b;
-})
-console.log(sort);
+// 탭 순서 수정
+app.post('/motab', (req, res)=>{
 
+  for(let i=0; i<Object.keys(req.body).length; i++){
+    db.collection('category').updateOne({category : Object.keys(req.body)[i]}, { $set: { ordernum : parseInt(Object.values(req.body)[i]) } }, (error, result)=>{
+      if(error) { return res.send(error) }
+    });
+  }
+
+  res.send(`<script type="text/javascript">alert("변경 완료"); history.go(-1);</script>`);
+})
+
+
+
+
+// 메일
+var time = today.toLocaleString();
+var utc = today.getTime();
+app.post('/mail', (req, res)=>{
+  var result = req.body.data;
+  db.collection('mail').insertOne({ name : result.name, email : result.email, phone : result.phone, message : result.message, time : time, utc : utc}, (error, result)=>{
+    if(error) {return res.send(error)};
+  })
+  res.send('감사합니다. 빠른 시일 내에 연락드리겠습니다.');
+})
+
+app.delete('/delmail', (req, res)=>{
+  req.body.utc = parseInt(req.body.utc);
+  db.collection('mail').deleteOne({utc : req.body.utc}, (error, result)=>{
+    if(error) {return res.send(error)}
+    res.send('메일이 삭제되었습니다.');
+  })
+})
 
 // react build 후 페이지
 app.use(express.static(path.join(__dirname, 'react-project/build')));

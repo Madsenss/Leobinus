@@ -2,8 +2,8 @@
 .slick-slider
 {   
     margin: auto;
-    width: 80%;
-    margin-top: 3rem;
+    width: 90%;
+    margin-top: 2.5rem;
     position: relative;
     display: block;
     overflow: hidden;
@@ -20,10 +20,9 @@
     -webkit-tap-highlight-color: transparent;
 }
 
-
 .imgbox img {
-    max-height: 100%;
-    max-width: 100%;
+    max-height: 90%;
+    max-width: 90%;
     position: absolute;
     top: 50%;
     left: 50%;
@@ -33,6 +32,7 @@
 .imgbox {
     height: 80vh;
     position: relative;
+    border: 1px solid black;
 }
 .imgbox:hover {
     cursor: pointer;
@@ -136,4 +136,10 @@
 }
 .slick-arrow.slick-hidden {
     display: none;
+}
+
+@media screen and (max-width: 600px) {
+  .slick-slider {
+    margin-top: 0;
+  }
 }

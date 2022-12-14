@@ -12,25 +12,36 @@ import AdminTab from './components/adminTab.js';
 import AdminNav from './components/adminNav.js';
 import Login from './components/login.js';
 import About from './components/about.js';
+import Mail from './components/mail';
 
 function App() {
   let [categorys, setCategorys] = useState();
   let [postData, setPostData] = useState();
+  let [mailData, setMailData] = useState();
+
 
   useEffect(() => {
-    axios.get('http://localhost:8080/categorys').then((result) => {
+    axios.get('/categorys').then((result) => {
       setCategorys(result.data);
     })
     .catch(() => {
       console.log('카테고리 로딩에 실패했습니다.')
     })
 
-    axios.get('http://localhost:8080/postdata').then((result) => {
+    axios.get('/postdata').then((result) => {
       setPostData(result.data); 
     })
     .catch(() => {
       console.log('데이터 로딩에 실패했습니다.')
     })
+
+    axios.get('/maildata').then((result) => {
+      setMailData(result.data); 
+    })
+    .catch(() => {
+      console.log('데이터 로딩에 실패했습니다.')
+    })
+
   }, [])
 
 
@@ -47,7 +58,7 @@ function App() {
         {
           categorys && categorys.map((item, i)=>{
             return(
-              <Route path={`/${item.category}`} element={<><MainNav categorys={categorys} /><Posts categorys={categorys} postData={postData} /></>} />
+              <Route key={i} path={`/${item.category}`} element={<><MainNav categorys={categorys} /><Posts categorys={categorys} postData={postData} /></>} />
             )
           })
         }
@@ -58,9 +69,9 @@ function App() {
         {/* 관리자 페이지 영역 */}
         <Route path="/login" element={<Login />} />
 
-        <Route path="/admin" element={<><AdminNav categorys={categorys} /><AdminTab postData={postData} categorys={categorys} /></>}/>
-        <Route path="/posts" element={<><AdminNav categorys={categorys} /><AdminTab postData={postData} categorys={categorys} /></>}/>
-        <Route path="/mail" element={<><AdminNav categorys={categorys} /><div>mail</div></>}/>
+        <Route path="/admin" element={<><AdminNav mailData={mailData} categorys={categorys} /><AdminTab postData={postData} categorys={categorys}/></>}/>
+        <Route path="/posts" element={<><AdminNav mailData={mailData} categorys={categorys} /><AdminTab postData={postData} categorys={categorys}/></>}/>
+        <Route path="/mail" element={<><AdminNav mailData={mailData} categorys={categorys} /><Mail mailData={mailData}/></>}/>
 
       </Routes>
     </div >
